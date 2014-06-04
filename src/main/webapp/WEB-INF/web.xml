@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    
+    <display-name>clivia-portal-trunk</display-name>
+    
+    <!-- Spring ApplicationContext配置文件的路径,可使用通配符,多个路径用,号分隔      此参数用于后面的Spring Context Loader -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath*:/applicationContext.xml</param-value>
+    </context-param>
+
+    <!-- Character Encoding filter -->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>    
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- 防止重复提交 -->
+    <filter>
+        <filter-name>tokenCheckFilter</filter-name>
+        <filter-class>com.orientpay.oecs.framework.web.filter.TokenCheckFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>tokenCheckFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+    
+     <filter>
+    	<filter-name>shiroFilter</filter-name>
+    	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  	</filter>
+  	<filter-mapping>
+    	<filter-name>shiroFilter</filter-name>
+    	<url-pattern>*.do</url-pattern>
+  	</filter-mapping>
+    
+    <filter>
+        <filter-name>AccessFilter</filter-name>
+        <filter-class>com.orientpay.clivia.portal.web.filter.AccessFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AccessFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping> 
+    <filter-mapping>
+        <filter-name>AccessFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping> 
+    
+    <servlet>
+        <servlet-name>dispatcher-servlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath*:dispatcher-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>  
+    
+    <servlet-mapping>
+        <servlet-name>dispatcher-servlet</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>freemarker-dispatcher-servlet</servlet-name>
+        <servlet-class>com.orientpay.clivia.portal.web.servlet.FreeMarkerDispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>characterEncoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>contentType</param-name>
+            <param-value>text/html;charset=UTF-8</param-value>
+        </init-param>
+        <load-on-startup>3</load-on-startup>
+    </servlet>  
+    
+    <servlet-mapping>
+        <servlet-name>freemarker-dispatcher-servlet</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>freemarker-dispatcher-servlet</servlet-name>
+        <url-pattern>*.ftl</url-pattern>
+    </servlet-mapping>
+    
+    <!--
+      - Loads the root application context of this web app at startup.
+      - The application context is then available via
+      - WebApplicationContextUtils.getWebApplicationContext(servletContext).
+    -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+     
+     <!-- Spring 刷新Introspector防止内存泄露 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+    
+    <!-- oecs 初始化 -->
+    <listener> 
+        <listener-class>com.orientpay.oecs.framework.web.listener.ContextLoaderListener</listener-class> 
+    </listener>
+    
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    
+    <error-page>
+        <error-code>500</error-code>
+        <location>/500.html</location>
+    </error-page>
+    
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.html</location>
+    </error-page>
+</web-app>

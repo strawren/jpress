@@ -1,0 +1,4 @@
+#!/bin/sh
+java -jar "`dirname "$0"`/ycombo-0.1.8.jar" "$@"
+ret=$?
+exit $ret

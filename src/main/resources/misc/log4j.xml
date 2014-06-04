@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <appender name="log-stdout" class="org.apache.log4j.ConsoleAppender">
+      <layout class="org.apache.log4j.PatternLayout">
+          <param name="ConversionPattern" value="%-d{HH:mm:ss} %-5p [%c{1}] %M (line:%L) %m%n"/>
+      </layout>
+    </appender>
+    
+    <appender name="log-file" class="org.apache.log4j.RollingFileAppender">
+      <param name="MaxFileSize" value="5120KB"/>
+      <param name="MaxBackupIndex" value="10"/>
+    	<param name="File" value="/opt/oecs-g2/log/clivia-portal/clivia-portal.log"/>
+    	<layout class="org.apache.log4j.PatternLayout">
+      	   <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} %-5p [%c{1}] %M (line:%L) %m%n"/>
+      </layout>
+    </appender>
+
+	  <appender class="org.apache.log4j.RollingFileAppender" name="rollingFile">
+      <param name="DatePattern" value=".yyyy-MM-dd"/>
+      <param name="File" value="/opt/oecs-g2/log/clivia-portal/cancel/clivia-portal.log"/>
+      <param name="Encoding" value="utf-8"/>
+      <param name="Append" value="true" />
+   	  <param name="MaxFileSize" value="1024KB" /> 
+   	  <param name="MaxBackupIndex" value="10" /> 
+      <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern" value="%d %-5p %-5c{3}:%L %X{client} -&gt; %m%n"/>
+      </layout>
+    </appender>
+
+    <category name="com.orientpay">
+       <priority value="DEBUG"/>
+       <appender-ref ref="log-stdout"/>
+    </category>
+
+		<!-- 
+ 		<category name="java.sql">  
+        <priority value="DEBUG" />  
+        <appender-ref ref="log-stdout"/>
+    </category>  
+    
+    <category name="org.apache.ibatis">  
+        <priority value="DEBUG" />  
+        <appender-ref ref="log-stdout"/>
+    </category> 
+     --> 
+    
+    <category name="org.springframework">
+       <priority value="ERROR"/>
+       <appender-ref ref="log-file"/>
+    </category>
+	
+    <!-- <logger name="org.apache.ibatis">
+        <level value="ERROR"/>
+				<appender-ref ref="log-file"/>
+    </logger> -->
+    
+     <root>
+       <priority value="ERROR"/>
+       <appender-ref ref="log-file"/>
+    </root>
+</log4j:configuration>

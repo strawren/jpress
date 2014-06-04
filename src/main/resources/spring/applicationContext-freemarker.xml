@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-lazy-init="true">
+    <!-- 标签 -->
+    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">  
+        <property name="templateLoaderPath" value="/template" />  
+        <property name="freemarkerVariables">
+            <map>
+                <entry key="webRoot" value="${clivia.portal.webroot}"/>
+                <entry key="adminSiteUrl" value="${clivia.admin.site.url}"/>
+                <entry key="postMetaTool" value-ref="postMetaTool"/>
+                <entry key="menuNavDirective" value-ref="menuNavDirective"/>
+                <entry key="postListDirective" value-ref="postListDirective"/>
+                <entry key="postDetailDirective" value-ref="postDetailDirective"/>
+                <entry key="vodPlayDirective" value-ref="vodPlayDirective"/>
+                
+                <entry key="gainTermDirective" value-ref="gainTermDirective"/>
+                <entry key="gainTermMetaDirective" value-ref="gainTermMetaDirective"/>
+                <entry key="gainPostMetaDirective" value-ref="gainPostMetaDirective"/>
+                <entry key="gainTermTaxonomyDirective" value-ref="gainTermTaxonomyDirective"/>
+                <entry key="getMenuIdDirective" value-ref="getMenuIdDirective"/>
+                
+            </map>
+    </property>
+        
+        <property name="freemarkerSettings">  
+            <props>  
+                <!-- freemarker解析格式设置 -->
+                <prop key="tag_syntax">auto_detect</prop>
+	            <!-- 处理变量中的null值，自动转为空字符串 -->     
+	            <prop key="classic_compatible">true</prop> 
+	            <!--默认编码 -->
+	            <prop key="default_encoding">UTF-8</prop>  
+	            <!--异常处理 --> 
+	            <prop key="template_exception_handler">com.orientpay.clivia.portal.freemarker.FreemarkerExceptionHandler</prop> 
+	            <!-- 正式环境改为更大：如1800(半小时) -->     
+	            <prop key="template_update_delay">2</prop>     
+	            <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop> 
+	            <prop key="date_format">yyyy-MM-dd</prop>
+	            <prop key="time_format">HH:mm:ss</prop> 
+	            <!-- 防止出现1,234这样的数字格式 -->     
+	            <prop key="number_format">0.######</prop>     
+	            <prop key="boolean_format">true,false</prop>     
+	            <!-- 清除空白 -->     
+	            <prop key="whitespace_stripping">true</prop> 
+	            <!-- 自动加载模版，并为其指定别名 -->
+	            <!-- <prop key="auto_import">/WEB-INF/ftl/pong/index.ftl as p,/WEB-INF/ftl/spring.ftl as s</prop> -->
+	        </props>
+        </property>  
+    </bean>  
+    
+</beans>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-lazy-init="true">
+	
+	<import resource="applicationContext-resources.xml" />
+	<import resource="applicationContext-common.xml" />
+	<import resource="applicationContext-security.xml" />
+    <import resource="applicationContext-freemarker.xml" />
+</beans>
