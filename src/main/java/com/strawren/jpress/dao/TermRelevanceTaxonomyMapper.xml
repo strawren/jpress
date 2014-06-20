@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- CmsTermMapper，目录、标签
+The categories for both posts and links and the tags for posts are found within the wp_terms table.，对应表CMS_TERM -->
+<mapper namespace="com.strawren.jpress.dao.TermRelevanceTaxonomyMapper">
+    <!-- 返回结果集Map -->
+    <resultMap id="BaseResultMap" type="com.strawren.jpress.dto.TermRelevanceTaxonomyDTO">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="TAXONOMY_ID" jdbcType="VARCHAR" property="taxonomyId" />
+        <result column="NAME" jdbcType="VARCHAR" property="name" />
+        <result column="SLUG" jdbcType="VARCHAR" property="slug" />
+        <result column="GROUP" jdbcType="BIGINT" property="group" />
+        <result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName" />
+        <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="CREATE_OPER_ID" jdbcType="BIGINT" property="createOperId" />
+        <result column="CREATE_OPER_NAME" jdbcType="VARCHAR" property="createOperName" />
+        <result column="LAST_UPD_TIME" jdbcType="TIMESTAMP" property="lastUpdTime" />
+        <result column="LAST_UPD_OPER_ID" jdbcType="BIGINT" property="lastUpdOperId" />
+        <result column="LAST_UPD_OPER_NAME" jdbcType="VARCHAR" property="lastUpdOperName" />
+        <result column="TERM_ID" jdbcType="BIGINT" property="termId" />
+        <result column="PARENT_ID" jdbcType="BIGINT" property="parentId" />
+        <result column="POST_COUNT" jdbcType="BIGINT" property="postCount" />
+        <result column="TAXONOMY" jdbcType="VARCHAR" property="taxonomy" />
+        <result column="TAX_LAST_UPD_TIME" jdbcType="VARCHAR" property="taxLastUpdTime" />
+    </resultMap>
+    
+    <!-- 菜单返回集 -->
+    <resultMap id="MemuResultMap" type="com.strawren.jpress.dto.MenuNavDTO">
+        <result column="TITLE" jdbcType="VARCHAR" property="title" />
+        <result column="PT1ID" jdbcType="VARCHAR" property="menuId" />
+        <result column="PT2ID" jdbcType="VARCHAR" property="sourceId" />
+        <result column="IMGNAME" jdbcType="BIGINT" property="imgName" />
+        <result column="GUID" jdbcType="VARCHAR" property="guid" />
+        <result column="MENUPARENT" jdbcType="VARCHAR" property="parentId" />
+    </resultMap>
+    
+    <!-- 根据分类方法查询父分类 -->
+    <select id="gettermTaxbyId" parameterType="long" resultMap="BaseResultMap" >
+        select t.*, t1.term_id, t1.parent_id,t1.post_count, t1.LAST_UPD_TIME as TAX_LAST_UPD_TIME from cms_term t,cms_term_taxonomy t1  
+          where t.id = t1.term_id 
+          and t.status = 'V' and t1.status = 'V'
+          and t.id = #{termId}
+    </select>
+    
+    
+     <select id="searchTremRelevanceTaxonomy" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="BaseResultMap">
+        select t.*, t1.id as TAXONOMY_ID, t1.term_id, t1.parent_id,t1.post_count,t1.taxonomy,t1.LAST_UPD_TIME as TAX_LAST_UPD_TIME from cms_term t,cms_term_taxonomy t1  
+          where t.id = t1.term_id  and t.status = 'V' and t1.status = 'V' ${whereSqlString}
+        <if test="orderBy != null">
+            ${orderBySqlString}
+        </if>
+    </select>
+    
+    <select id="getTermIdByPostId" parameterType="long" resultType="long">
+       select t.id from cms_term_relationship r,cms_term_taxonomy t 
+              where t.status = 'V' 
+              and r.status = 'V' 
+              and r.term_taxonomy_id = t.id
+              and r.object_id = #{objectId}
+    </select>
+    
+    <!-- 根据条件查找数据条数 -->
+    <select id="count" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="long" >
+         select t.*, t1.id as TAXONOMY_ID, t1.term_id, t1.parent_id,t1.post_count,t1.taxonomy,t1.LAST_UPD_TIME as TAX_LAST_UPD_TIME from cms_term t,cms_term_taxonomy t1  
+          where t.id = t1.term_id and t.status = 'V' and t1.status = 'V' ${whereSqlString}
+    </select>
+    
+</mapper>

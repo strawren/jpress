@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-    
-    <display-name>clivia-portal-trunk</display-name>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"  
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	
+    <display-name>jpress</display-name>
     
     <!-- Spring ApplicationContext配置文件的路径,可使用通配符,多个路径用,号分隔      此参数用于后面的Spring Context Loader -->
     <context-param>
@@ -28,6 +30,7 @@
     </filter-mapping>
 
     <!-- 防止重复提交 -->
+    <!-- 
     <filter>
         <filter-name>tokenCheckFilter</filter-name>
         <filter-class>com.orientpay.oecs.framework.web.filter.TokenCheckFilter</filter-class>
@@ -36,17 +39,18 @@
         <filter-name>tokenCheckFilter</filter-name>
         <url-pattern>*.do</url-pattern>
     </filter-mapping>
-    
+     -->
+     
      <filter>
     	<filter-name>shiroFilter</filter-name>
     	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
   	</filter>
   	<filter-mapping>
     	<filter-name>shiroFilter</filter-name>
-    	<url-pattern>*.do</url-pattern>
+    	<url-pattern>*.action</url-pattern>
   	</filter-mapping>
     
-    <filter>
+    <!-- <filter>
         <filter-name>AccessFilter</filter-name>
         <filter-class>com.orientpay.clivia.portal.web.filter.AccessFilter</filter-class>
     </filter>
@@ -57,7 +61,7 @@
     <filter-mapping>
         <filter-name>AccessFilter</filter-name>
         <url-pattern>*.do</url-pattern>
-    </filter-mapping> 
+    </filter-mapping>  -->
     
     <servlet>
         <servlet-name>dispatcher-servlet</servlet-name>
@@ -66,17 +70,16 @@
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath*:dispatcher-servlet.xml</param-value>
         </init-param>
-        <load-on-startup>2</load-on-startup>
+        <load-on-startup>1</load-on-startup>
     </servlet>  
-    
     <servlet-mapping>
         <servlet-name>dispatcher-servlet</servlet-name>
-        <url-pattern>*.do</url-pattern>
+        <url-pattern>*.action</url-pattern>
     </servlet-mapping>
     
     <servlet>
         <servlet-name>freemarker-dispatcher-servlet</servlet-name>
-        <servlet-class>com.orientpay.clivia.portal.web.servlet.FreeMarkerDispatcherServlet</servlet-class>
+        <servlet-class>com.strawren.jpress.web.servlet.front.FreeMarkerDispatcherServlet</servlet-class>
         <init-param>
             <param-name>characterEncoding</param-name>
             <param-value>UTF-8</param-value>
@@ -87,17 +90,28 @@
         </init-param>
         <load-on-startup>3</load-on-startup>
     </servlet>  
-    
     <servlet-mapping>
         <servlet-name>freemarker-dispatcher-servlet</servlet-name>
         <url-pattern>*.html</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>freemarker-dispatcher-servlet</servlet-name>
         <url-pattern>*.ftl</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+    	<servlet-name>druidStatView</servlet-name>
+    	<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+    	<init-param>
+      		<param-name>allow</param-name>
+      		<param-value>127.0.0.1</param-value>
+  		</init-param>
+  	</servlet>
+  	<servlet-mapping>
+      <servlet-name>druidStatView</servlet-name>
+      <url-pattern>/druid/*</url-pattern>
+  	</servlet-mapping>
+  	
     <!--
       - Loads the root application context of this web app at startup.
       - The application context is then available via
@@ -112,13 +126,14 @@
         <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
     </listener>
     
-    <!-- oecs 初始化 -->
+    <!-- context 初始化 -->
     <listener> 
-        <listener-class>com.orientpay.oecs.framework.web.listener.ContextLoaderListener</listener-class> 
+        <listener-class>com.strawren.bsp.web.listener.ContextLoaderListener</listener-class> 
     </listener>
     
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
     
     <error-page>

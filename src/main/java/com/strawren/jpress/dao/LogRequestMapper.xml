@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- LogRequestMapper，对应表LOG_REQUEST -->
+<mapper namespace="com.strawren.jpress.dao.LogRequestMapper">
+    <!-- 返回结果集Map -->
+    <resultMap id="BaseResultMap" type="com.strawren.jpress.model.LogRequest">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="REQ_HOST" jdbcType="VARCHAR" property="reqHost" />
+        <result column="REQ_AGENT" jdbcType="VARCHAR" property="reqAgent" />
+        <result column="REQ_PARAM" jdbcType="CLOB" property="reqParam" />
+        <result column="REQ_URL" jdbcType="VARCHAR" property="reqUrl" />
+        <result column="REQ_DATE" jdbcType="TIMESTAMP" property="reqDate" />
+        <result column="REQ_USER_ID" jdbcType="BIGINT" property="reqUserId" />
+        <result column="REQ_USER_NAME" jdbcType="VARCHAR" property="reqUserName" />
+        <result column="REQ_OPER_ID" jdbcType="BIGINT" property="reqOperId" />
+        <result column="REQ_OPER_NAME" jdbcType="VARCHAR" property="reqOperName" />
+        <result column="LOG_LEVEL" jdbcType="VARCHAR" property="logLevel" />
+        <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="CREATE_OPER_ID" jdbcType="BIGINT" property="createOperId" />
+        <result column="CREATE_OPER_NAME" jdbcType="VARCHAR" property="createOperName" />
+        <result column="LAST_UPD_TIME" jdbcType="TIMESTAMP" property="lastUpdTime" />
+        <result column="LAST_UPD_OPER_ID" jdbcType="BIGINT" property="lastUpdOperId" />
+        <result column="LAST_UPD_OPER_NAME" jdbcType="VARCHAR" property="lastUpdOperName" />
+    </resultMap>
+    
+    <!-- 保存数据 -->
+    <insert id="save" parameterType="com.strawren.jpress.model.LogRequest">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+        SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into LOG_REQUEST (
+            ID,
+            REQ_HOST,
+            REQ_AGENT,
+            REQ_PARAM,
+            REQ_URL,
+            REQ_DATE,
+            REQ_USER_ID,
+            REQ_USER_NAME,
+            REQ_OPER_ID,
+            REQ_OPER_NAME,
+            LOG_LEVEL,
+            MISC_DESC,
+            STATUS,
+            CREATE_TIME,
+            CREATE_OPER_ID,
+            CREATE_OPER_NAME,
+            LAST_UPD_TIME,
+            LAST_UPD_OPER_ID,
+            LAST_UPD_OPER_NAME
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{reqHost,jdbcType=VARCHAR},
+            #{reqAgent,jdbcType=VARCHAR},
+            #{reqParam,jdbcType=CLOB},
+            #{reqUrl,jdbcType=VARCHAR},
+            #{reqDate,jdbcType=TIMESTAMP},
+            #{reqUserId,jdbcType=BIGINT},
+            #{reqUserName,jdbcType=VARCHAR},
+            #{reqOperId,jdbcType=BIGINT},
+            #{reqOperName,jdbcType=VARCHAR},
+            #{logLevel,jdbcType=VARCHAR},
+            #{miscDesc,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{createOperId,jdbcType=BIGINT},
+            #{createOperName,jdbcType=VARCHAR},
+            #{lastUpdTime,jdbcType=TIMESTAMP},
+            #{lastUpdOperId,jdbcType=BIGINT},
+            #{lastUpdOperName,jdbcType=VARCHAR}
+        )
+    </insert>
+    
+      <!-- 根据主键取得数据 -->
+    <select id="get" parameterType="long" resultMap="BaseResultMap">
+        select * from LOG_REQUEST where ID = #{id,jdbcType=BIGINT}
+    </select>
+  
+      <!-- 删除数据 -->
+    <delete id="delete" parameterType="long">
+        delete from LOG_REQUEST where ID = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 更新数据 -->
+    <update id="update" parameterType="com.strawren.jpress.model.LogRequest">
+        update LOG_REQUEST
+        <set>
+            <if test="entityMap.reqHost != null">
+                REQ_HOST = #{entityMap.reqHost,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.reqAgent != null">
+                REQ_AGENT = #{entityMap.reqAgent,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.reqParam != null">
+                REQ_PARAM = #{entityMap.reqParam,jdbcType=CLOB},
+            </if>
+            <if test="entityMap.reqUrl != null">
+                REQ_URL = #{entityMap.reqUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.reqDate != null">
+                REQ_DATE = #{entityMap.reqDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.reqUserId != null">
+                REQ_USER_ID = #{entityMap.reqUserId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.reqUserName != null">
+                REQ_USER_NAME = #{entityMap.reqUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.reqOperId != null">
+                REQ_OPER_ID = #{entityMap.reqOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.reqOperName != null">
+                REQ_OPER_NAME = #{entityMap.reqOperName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.logLevel != null">
+                LOG_LEVEL = #{entityMap.logLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.miscDesc != null">
+                MISC_DESC = #{entityMap.miscDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.status != null">
+                STATUS = #{entityMap.status,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.createTime != null">
+                CREATE_TIME = #{entityMap.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.createOperId != null">
+                CREATE_OPER_ID = #{entityMap.createOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.createOperName != null">
+                CREATE_OPER_NAME = #{entityMap.createOperName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.lastUpdTime != null">
+                LAST_UPD_TIME = #{entityMap.lastUpdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.lastUpdOperId != null">
+                LAST_UPD_OPER_ID = #{entityMap.lastUpdOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.lastUpdOperName != null">
+                LAST_UPD_OPER_NAME = #{entityMap.lastUpdOperName,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据条件查找数据 -->
+    <select id="find" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="BaseResultMap">
+        SELECT * FROM LOG_REQUEST WHERE 1=1 ${whereSqlString}
+        <if test="orderBy != null">
+            ${orderBySqlString}
+        </if>
+    </select>
+    
+    <!-- 根据条件查找数据条数 -->
+    <select id="count" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="long" >
+        SELECT COUNT(ID) FROM LOG_REQUEST WHERE 1=1 ${whereSqlString} 
+    </select>
+    
+    <select id="countByTerm" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="java.util.HashMap">
+        select REQ_URL as termName,to_char(count(1)) as count,count(1) as total
+        from LOG_REQUEST 
+        WHERE REQ_URL is not null ${whereSqlString} 
+        group by REQ_URL 
+        order by total desc 
+    </select>
+    
+    <select id="countByItem" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="java.util.HashMap">
+        select MISC_DESC as itemNo,to_char(count(1)) as count,count(1) as total
+        from LOG_REQUEST 
+        WHERE MISC_DESC is not null ${whereSqlString} 
+        group by MISC_DESC 
+        order by total desc 
+    </select>
+    
+    <select id="countByUser" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="java.util.HashMap">
+        select REQ_USER_NAME as USERNAME,
+        REQ_HOST as ADDRESS,
+        REQ_AGENT as MAC,
+        to_char(REQ_DATE,'yyyy-mm-dd hh24:mi:ss') as REQTIME,
+        REQ_URL as TERMNAME,
+        MISC_DESC as ITEMNO 
+        from LOG_REQUEST 
+        WHERE 1=1 ${whereSqlString} 
+        order by REQ_DATE desc 
+    </select>
+</mapper>

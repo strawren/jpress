@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- LogProcessMapper，处理日志，通过日志类型+动作+是否显示给用户
+日志类型包括订单、商户，对应表LOG_PROCESS -->
+<mapper namespace="com.strawren.jpress.dao.LogProcessMapper">
+    <!-- 返回结果集Map -->
+    <resultMap id="BaseResultMap" type="com.strawren.jpress.model.LogProcess">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="LOG_TYPE" jdbcType="VARCHAR" property="logType" />
+        <result column="LOG_RESULT" jdbcType="VARCHAR" property="logResult" />
+        <result column="REFER_BIZ_ID" jdbcType="VARCHAR" property="referBizId" />
+        <result column="REFER_BIZ" jdbcType="VARCHAR" property="referBiz" />
+        <result column="PROCESS_DATE" jdbcType="TIMESTAMP" property="processDate" />
+        <result column="REQ_USER_ID" jdbcType="BIGINT" property="reqUserId" />
+        <result column="REQ_USER_NAME" jdbcType="VARCHAR" property="reqUserName" />
+        <result column="REQ_OPER_ID" jdbcType="BIGINT" property="reqOperId" />
+        <result column="REQ_OPER_NAME" jdbcType="VARCHAR" property="reqOperName" />
+        <result column="PROCESS_SUMMARY" jdbcType="CLOB" property="processSummary" />
+        <result column="PROCESS_DETAIL" jdbcType="CLOB" property="processDetail" />
+        <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="CREATE_OPER_ID" jdbcType="BIGINT" property="createOperId" />
+        <result column="CREATE_OPER_NAME" jdbcType="VARCHAR" property="createOperName" />
+        <result column="LAST_UPD_TIME" jdbcType="TIMESTAMP" property="lastUpdTime" />
+        <result column="LAST_UPD_OPER_ID" jdbcType="BIGINT" property="lastUpdOperId" />
+        <result column="LAST_UPD_OPER_NAME" jdbcType="VARCHAR" property="lastUpdOperName" />
+    </resultMap>
+    
+    <!-- 保存数据 -->
+    <insert id="save" parameterType="com.strawren.jpress.model.LogProcess">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+        SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into LOG_PROCESS (
+            ID,
+            LOG_TYPE,
+            LOG_RESULT,
+            REFER_BIZ_ID,
+            REFER_BIZ,
+            PROCESS_DATE,
+            REQ_USER_ID,
+            REQ_USER_NAME,
+            REQ_OPER_ID,
+            REQ_OPER_NAME,
+            PROCESS_SUMMARY,
+            PROCESS_DETAIL,
+            MISC_DESC,
+            STATUS,
+            CREATE_TIME,
+            CREATE_OPER_ID,
+            CREATE_OPER_NAME,
+            LAST_UPD_TIME,
+            LAST_UPD_OPER_ID,
+            LAST_UPD_OPER_NAME
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{logType,jdbcType=VARCHAR},
+            #{logResult,jdbcType=VARCHAR},
+            #{referBizId,jdbcType=VARCHAR},
+            #{referBiz,jdbcType=VARCHAR},
+            #{processDate,jdbcType=TIMESTAMP},
+            #{reqUserId,jdbcType=BIGINT},
+            #{reqUserName,jdbcType=VARCHAR},
+            #{reqOperId,jdbcType=BIGINT},
+            #{reqOperName,jdbcType=VARCHAR},
+            #{processSummary,jdbcType=CLOB},
+            #{processDetail,jdbcType=CLOB},
+            #{miscDesc,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{createOperId,jdbcType=BIGINT},
+            #{createOperName,jdbcType=VARCHAR},
+            #{lastUpdTime,jdbcType=TIMESTAMP},
+            #{lastUpdOperId,jdbcType=BIGINT},
+            #{lastUpdOperName,jdbcType=VARCHAR}
+        )
+    </insert>
+    
+      <!-- 根据主键取得数据 -->
+    <select id="get" parameterType="long" resultMap="BaseResultMap">
+        select * from LOG_PROCESS where ID = #{id,jdbcType=BIGINT}
+    </select>
+  
+      <!-- 删除数据 -->
+    <delete id="delete" parameterType="long">
+        delete from LOG_PROCESS where ID = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 更新数据 -->
+    <update id="update" parameterType="com.strawren.jpress.model.LogProcess">
+        update LOG_PROCESS
+        <set>
+            <if test="entityMap.logType != null">
+                LOG_TYPE = #{entityMap.logType,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.logResult != null">
+                LOG_RESULT = #{entityMap.logResult,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.referBizId != null">
+                REFER_BIZ_ID = #{entityMap.referBizId,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.referBiz != null">
+                REFER_BIZ = #{entityMap.referBiz,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.processDate != null">
+                PROCESS_DATE = #{entityMap.processDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.reqUserId != null">
+                REQ_USER_ID = #{entityMap.reqUserId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.reqUserName != null">
+                REQ_USER_NAME = #{entityMap.reqUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.reqOperId != null">
+                REQ_OPER_ID = #{entityMap.reqOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.reqOperName != null">
+                REQ_OPER_NAME = #{entityMap.reqOperName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.processSummary != null">
+                PROCESS_SUMMARY = #{entityMap.processSummary,jdbcType=CLOB},
+            </if>
+            <if test="entityMap.processDetail != null">
+                PROCESS_DETAIL = #{entityMap.processDetail,jdbcType=CLOB},
+            </if>
+            <if test="entityMap.miscDesc != null">
+                MISC_DESC = #{entityMap.miscDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.status != null">
+                STATUS = #{entityMap.status,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.createTime != null">
+                CREATE_TIME = #{entityMap.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.createOperId != null">
+                CREATE_OPER_ID = #{entityMap.createOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.createOperName != null">
+                CREATE_OPER_NAME = #{entityMap.createOperName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.lastUpdTime != null">
+                LAST_UPD_TIME = #{entityMap.lastUpdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.lastUpdOperId != null">
+                LAST_UPD_OPER_ID = #{entityMap.lastUpdOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.lastUpdOperName != null">
+                LAST_UPD_OPER_NAME = #{entityMap.lastUpdOperName,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据条件查找数据 -->
+    <select id="find" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="BaseResultMap">
+        SELECT * FROM LOG_PROCESS WHERE 1=1 ${whereSqlString}
+        <if test="orderBy != null">
+            ${orderBySqlString}
+        </if>
+    </select>
+    
+    <!-- 根据条件查找数据条数 -->
+    <select id="count" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="long" >
+        SELECT COUNT(ID) FROM LOG_PROCESS WHERE 1=1 ${whereSqlString} 
+    </select>
+</mapper>

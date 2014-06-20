@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- CmsTermMapper，目录、标签
+The categories for both posts and links and the tags for posts are found within the wp_terms table.，对应表CMS_TERM -->
+<mapper namespace="com.strawren.jpress.dao.CmsTermMapper">
+    <!-- 返回结果集Map -->
+    <resultMap id="BaseResultMap" type="com.strawren.jpress.model.CmsTerm">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="NAME" jdbcType="VARCHAR" property="name" />
+        <result column="SLUG" jdbcType="VARCHAR" property="slug" />
+        <result column="GROUP" jdbcType="BIGINT" property="group" />
+        <result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName" />
+        <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="CREATE_OPER_ID" jdbcType="BIGINT" property="createOperId" />
+        <result column="CREATE_OPER_NAME" jdbcType="VARCHAR" property="createOperName" />
+        <result column="LAST_UPD_TIME" jdbcType="TIMESTAMP" property="lastUpdTime" />
+        <result column="LAST_UPD_OPER_ID" jdbcType="BIGINT" property="lastUpdOperId" />
+        <result column="LAST_UPD_OPER_NAME" jdbcType="VARCHAR" property="lastUpdOperName" />
+    </resultMap>
+    
+    <!-- 保存数据 -->
+    <insert id="save" parameterType="com.strawren.jpress.model.CmsTerm">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+        SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into CMS_TERM (
+            ID,
+            NAME,
+            SLUG,
+            "GROUP",
+            GROUP_NAME,
+            MISC_DESC,
+            STATUS,
+            CREATE_TIME,
+            CREATE_OPER_ID,
+            CREATE_OPER_NAME,
+            LAST_UPD_TIME,
+            LAST_UPD_OPER_ID,
+            LAST_UPD_OPER_NAME
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{name,jdbcType=VARCHAR},
+            #{slug,jdbcType=VARCHAR},
+            #{group,jdbcType=BIGINT},
+            #{groupName,jdbcType=VARCHAR},
+            #{miscDesc,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{createOperId,jdbcType=BIGINT},
+            #{createOperName,jdbcType=VARCHAR},
+            #{lastUpdTime,jdbcType=TIMESTAMP},
+            #{lastUpdOperId,jdbcType=BIGINT},
+            #{lastUpdOperName,jdbcType=VARCHAR}
+        )
+    </insert>
+    
+      <!-- 根据主键取得数据 -->
+    <select id="get" parameterType="long" resultMap="BaseResultMap">
+        select * from CMS_TERM where ID = #{id,jdbcType=BIGINT}
+    </select>
+  
+      <!-- 删除数据 -->
+    <delete id="delete" parameterType="long">
+        delete from CMS_TERM where ID = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 更新数据 -->
+    <update id="update" parameterType="com.strawren.jpress.model.CmsTerm">
+        update CMS_TERM
+        <set>
+            <if test="entityMap.name != null">
+                NAME = #{entityMap.name,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.slug != null">
+                SLUG = #{entityMap.slug,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.group != null">
+                "GROUP" = #{entityMap.group,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.groupName != null">
+                GROUP_NAME = #{entityMap.groupName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.miscDesc != null">
+                MISC_DESC = #{entityMap.miscDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.status != null">
+                STATUS = #{entityMap.status,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.createTime != null">
+                CREATE_TIME = #{entityMap.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.createOperId != null">
+                CREATE_OPER_ID = #{entityMap.createOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.createOperName != null">
+                CREATE_OPER_NAME = #{entityMap.createOperName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.lastUpdTime != null">
+                LAST_UPD_TIME = #{entityMap.lastUpdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.lastUpdOperId != null">
+                LAST_UPD_OPER_ID = #{entityMap.lastUpdOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.lastUpdOperName != null">
+                LAST_UPD_OPER_NAME = #{entityMap.lastUpdOperName,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据条件查找数据 -->
+    <select id="find" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="BaseResultMap">
+        SELECT * FROM CMS_TERM WHERE 1=1 ${whereSqlString}
+        <if test="orderBy != null">
+            ${orderBySqlString}
+        </if>
+    </select>
+    
+    <!-- 根据条件查找数据条数 -->
+    <select id="count" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="long" >
+        SELECT COUNT(ID) FROM CMS_TERM WHERE 1=1 ${whereSqlString} 
+    </select>
+    
+    <!-- 返回结果集Map -->
+    <resultMap id="LinkCategoryDTOResultMap" type="com.strawren.jpress.dto.CmsLinkCategoryDTO">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="NAME" jdbcType="VARCHAR" property="name" />
+        <result column="SLUG" jdbcType="VARCHAR" property="slug" />
+        <result column="GROUP" jdbcType="BIGINT" property="group" />
+        <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="CREATE_OPER_ID" jdbcType="BIGINT" property="createOperId" />
+        <result column="CREATE_OPER_NAME" jdbcType="VARCHAR" property="createOperName" />
+        <result column="LAST_UPD_TIME" jdbcType="TIMESTAMP" property="lastUpdTime" />
+        <result column="LAST_UPD_OPER_ID" jdbcType="BIGINT" property="lastUpdOperId" />
+        <result column="LAST_UPD_OPER_NAME" jdbcType="VARCHAR" property="lastUpdOperName" />
+        <result column="linkCount" jdbcType="BIGINT" property="linkCount" />
+        <result column="termTaxonomyId" jdbcType="BIGINT" property="termTaxonomyId" />
+    </resultMap>
+    
+    <!-- 获取所有链接分类目录 -->
+    <select id="findAllLinkCategory" parameterType="java.lang.String" resultMap="LinkCategoryDTOResultMap" >
+        select t.*,tt.POST_COUNT as linkCount,tt.id as termTaxonomyId from cms_term t, cms_term_taxonomy tt 
+        where t.status='V' 
+        and t.id=tt.TERM_ID 
+        and tt.taxonomy='lnk' 
+        <if test="_parameter!=null or _parameter!=''"> 
+        and t.name like '%'||#{_parameter}||'%'
+        </if>
+    </select>
+    
+    <!-- 分页获取所有链接分类目录 -->
+    <select id="searchLinkCategory" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="LinkCategoryDTOResultMap" >
+        select t.*,tt.POST_COUNT as linkCount,tt.id as termTaxonomyId from cms_term t, cms_term_taxonomy tt 
+        where t.status='V' 
+        and t.id=tt.TERM_ID 
+        and tt.taxonomy='lnk' 
+        ${whereSqlString} 
+        <if test="orderBy != null">
+            ${orderBySqlString}
+        </if>
+    </select>
+    
+    <!-- 根据条件查找链接分类目录条数 -->
+    <select id="countLinkCategory" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="long" >
+        select count(1) from cms_term t, cms_term_taxonomy tt 
+        where t.status='V' 
+        and t.id=tt.TERM_ID 
+        and tt.taxonomy='lnk' 
+        ${whereSqlString} 
+    </select>
+    
+    <!-- 获取菜单条 -->
+    <select id="getMenuBarBySlug" parameterType="java.util.Map" resultType="long" >
+        select ty.id from cms_term tm,cms_term_taxonomy ty
+          where tm.slug = #{slug}
+          and ty.taxonomy = #{taxonomy}
+          and tm.id = ty.term_id
+          and tm.status = 'V' 
+          and ty.status = 'V'
+    </select>
+    
+    
+    
+    <!-- 返回结果集Map -->
+    <resultMap id="TermResultMap" type="com.strawren.jpress.dto.TermTaxonomyDTO">
+        <result column="TERM_ID" jdbcType="BIGINT" property="termId" />
+        <result column="NAME" jdbcType="VARCHAR" property="name" />
+        <result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName" />
+        <result column="SLUG" jdbcType="VARCHAR" property="slug" />
+        <result column="GROUP" jdbcType="BIGINT" property="group" />
+        <result column="TM_MISC" jdbcType="VARCHAR" property="tmmisc" />
+        <result column="TM_STATUS" jdbcType="VARCHAR" property="tmstatus" />
+        <result column="TY_ID" jdbcType="BIGINT" property="tyId" />
+        <result column="TAXONOMY" jdbcType="VARCHAR" property="taxonomy" />
+        <result column="PARENT_ID" jdbcType="BIGINT" property="parentId" />
+        <result column="POST_COUNT" jdbcType="BIGINT" property="postCount" />
+        <result column="TY_MISC" jdbcType="VARCHAR" property="tymisc" />
+        <result column="TY_STATUS" jdbcType="VARCHAR" property="tystatus" />
+    </resultMap>
+    
+    <select id="searchTermTaxonomy" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="TermResultMap" >
+        select* from(select tm.id as TERM_ID, tm.GROUP_NAME, tm.name,tm.slug, "GROUP",ty.id as TY_ID, ty.taxonomy,
+          tm.misc_desc as TM_MISC,tm.status as TM_STATUS,ty.parent_id, ty.post_count,ty.misc_desc as TY_MISC,
+          ty.status TY_STATUS from cms_term tm, cms_term_taxonomy ty where tm.id = ty.term_id )
+          where 1=1 and TM_STATUS='V' and TY_STATUS='V'
+          ${whereSqlString} 
+          <if test="orderBy != null">
+            ${orderBySqlString}
+        </if>
+    </select>
+    
+    <select id="getMaxOerderNo" parameterType="java.lang.String" resultType="long" >
+         select nvl(max(show_group),0) from (select "GROUP" as show_group from cms_term t, cms_term_taxonomy y 
+                where t.id = y.term_id
+                and y.taxonomy = 'tag'
+                and t.status = 'V'
+                and y.status = 'V')       
+    </select>
+    
+    
+</mapper>

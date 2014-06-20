@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- CmsPostMapper，内容：包括page、revision、post、attachment
+
+The core of the WordPress data is the posts. It is stored in the wp_posts table. Also Pages and navigation menu items are stored in this table.，对应表CMS_POST -->
+<mapper namespace="com.strawren.jpress.dao.CmsPostMapper">
+    <!-- 返回结果集Map -->
+    <resultMap id="BaseResultMap" type="com.strawren.jpress.model.CmsPost">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="OWNER_ID" jdbcType="BIGINT" property="ownerId" />
+        <result column="SHOW_OWNER" jdbcType="VARCHAR" property="showOwner" />
+        <result column="SLUG" jdbcType="VARCHAR" property="slug" />
+        <result column="POST_DATE" jdbcType="TIMESTAMP" property="postDate" />
+        <result column="SHOW_DATE" jdbcType="TIMESTAMP" property="showDate" />
+        <result column="CONTENT" jdbcType="CLOB" property="content" />
+        <result column="TITLE" jdbcType="VARCHAR" property="title" />
+        <result column="EXCERPT" jdbcType="CLOB" property="excerpt" />
+        <result column="POST_STATUS" jdbcType="VARCHAR" property="postStatus" />
+        <result column="COMMENT_STATUS" jdbcType="VARCHAR" property="commentStatus" />
+        <result column="PING_STATUS" jdbcType="VARCHAR" property="pingStatus" />
+        <result column="POST_PWD" jdbcType="VARCHAR" property="postPwd" />
+        <result column="TO_PING" jdbcType="VARCHAR" property="toPing" />
+        <result column="PINGED" jdbcType="VARCHAR" property="pinged" />
+        <result column="FITLERED" jdbcType="VARCHAR" property="fitlered" />
+        <result column="PARENT_ID" jdbcType="BIGINT" property="parentId" />
+        <result column="GUID" jdbcType="VARCHAR" property="guid" />
+        <result column="MENU_ORDER" jdbcType="BIGINT" property="menuOrder" />
+        <result column="POST_TYPE" jdbcType="VARCHAR" property="postType" />
+        <result column="MIME_TYPE" jdbcType="VARCHAR" property="mimeType" />
+        <result column="COMMENT_COUNT" jdbcType="BIGINT" property="commentCount" />
+        <result column="SHOW_ORDER" jdbcType="BIGINT" property="showOrder" />
+        <result column="TOP_FLAG" jdbcType="VARCHAR" property="topFlag" />
+        <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="CREATE_OPER_ID" jdbcType="BIGINT" property="createOperId" />
+        <result column="CREATE_OPER_NAME" jdbcType="VARCHAR" property="createOperName" />
+        <result column="LAST_UPD_TIME" jdbcType="TIMESTAMP" property="lastUpdTime" />
+        <result column="LAST_UPD_OPER_ID" jdbcType="BIGINT" property="lastUpdOperId" />
+        <result column="LAST_UPD_OPER_NAME" jdbcType="VARCHAR" property="lastUpdOperName" />
+    </resultMap>
+    
+    <!-- 保存数据 -->
+    <insert id="save" parameterType="com.strawren.jpress.model.CmsPost">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+        SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into CMS_POST (
+            ID,
+            OWNER_ID,
+            SHOW_OWNER,
+            SLUG,
+            POST_DATE,
+            SHOW_DATE,
+            CONTENT,
+            TITLE,
+            EXCERPT,
+            POST_STATUS,
+            COMMENT_STATUS,
+            PING_STATUS,
+            POST_PWD,
+            TO_PING,
+            PINGED,
+            FITLERED,
+            PARENT_ID,
+            GUID,
+            MENU_ORDER,
+            POST_TYPE,
+            MIME_TYPE,
+            COMMENT_COUNT,
+            SHOW_ORDER,
+            TOP_FLAG,
+            MISC_DESC,
+            STATUS,
+            CREATE_TIME,
+            CREATE_OPER_ID,
+            CREATE_OPER_NAME,
+            LAST_UPD_TIME,
+            LAST_UPD_OPER_ID,
+            LAST_UPD_OPER_NAME
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{ownerId,jdbcType=BIGINT},
+            #{showOwner,jdbcType=VARCHAR},
+            #{slug,jdbcType=VARCHAR},
+            #{postDate,jdbcType=TIMESTAMP},
+            #{showDate,jdbcType=TIMESTAMP},
+            #{content,jdbcType=CLOB},
+            #{title,jdbcType=VARCHAR},
+            #{excerpt,jdbcType=CLOB},
+            #{postStatus,jdbcType=VARCHAR},
+            #{commentStatus,jdbcType=VARCHAR},
+            #{pingStatus,jdbcType=VARCHAR},
+            #{postPwd,jdbcType=VARCHAR},
+            #{toPing,jdbcType=VARCHAR},
+            #{pinged,jdbcType=VARCHAR},
+            #{fitlered,jdbcType=VARCHAR},
+            #{parentId,jdbcType=BIGINT},
+            #{guid,jdbcType=VARCHAR},
+            #{menuOrder,jdbcType=BIGINT},
+            #{postType,jdbcType=VARCHAR},
+            #{mimeType,jdbcType=VARCHAR},
+            #{commentCount,jdbcType=BIGINT},
+            #{showOrder,jdbcType=BIGINT},
+            #{topFlag,jdbcType=VARCHAR},
+            #{miscDesc,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{createOperId,jdbcType=BIGINT},
+            #{createOperName,jdbcType=VARCHAR},
+            #{lastUpdTime,jdbcType=TIMESTAMP},
+            #{lastUpdOperId,jdbcType=BIGINT},
+            #{lastUpdOperName,jdbcType=VARCHAR}
+        )
+    </insert>
+    
+      <!-- 根据主键取得数据 -->
+    <select id="get" parameterType="long" resultMap="BaseResultMap">
+        select * from CMS_POST where ID = #{id,jdbcType=BIGINT}
+    </select>
+  
+      <!-- 删除数据 -->
+    <delete id="delete" parameterType="long">
+        delete from CMS_POST where ID = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 更新数据 -->
+    <update id="update" parameterType="com.strawren.jpress.model.CmsPost">
+        update CMS_POST
+        <set>
+            <if test="entityMap.ownerId != null">
+                OWNER_ID = #{entityMap.ownerId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.showOwner != null">
+                SHOW_OWNER = #{entityMap.showOwner,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.slug != null">
+                SLUG = #{entityMap.slug,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.postDate != null">
+                POST_DATE = #{entityMap.postDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.showDate != null">
+                SHOW_DATE = #{entityMap.showDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.content != null">
+                CONTENT = #{entityMap.content,jdbcType=CLOB},
+            </if>
+            <if test="entityMap.title != null">
+                TITLE = #{entityMap.title,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.excerpt != null">
+                EXCERPT = #{entityMap.excerpt,jdbcType=CLOB},
+            </if>
+            <if test="entityMap.postStatus != null">
+                POST_STATUS = #{entityMap.postStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.commentStatus != null">
+                COMMENT_STATUS = #{entityMap.commentStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.pingStatus != null">
+                PING_STATUS = #{entityMap.pingStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.postPwd != null">
+                POST_PWD = #{entityMap.postPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.toPing != null">
+                TO_PING = #{entityMap.toPing,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.pinged != null">
+                PINGED = #{entityMap.pinged,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.fitlered != null">
+                FITLERED = #{entityMap.fitlered,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.parentId != null">
+                PARENT_ID = #{entityMap.parentId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.guid != null">
+                GUID = #{entityMap.guid,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.menuOrder != null">
+                MENU_ORDER = #{entityMap.menuOrder,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.postType != null">
+                POST_TYPE = #{entityMap.postType,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.mimeType != null">
+                MIME_TYPE = #{entityMap.mimeType,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.commentCount != null">
+                COMMENT_COUNT = #{entityMap.commentCount,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.showOrder != null">
+                SHOW_ORDER = #{entityMap.showOrder,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.topFlag != null">
+                TOP_FLAG = #{entityMap.topFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.miscDesc != null">
+                MISC_DESC = #{entityMap.miscDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.status != null">
+                STATUS = #{entityMap.status,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.createTime != null">
+                CREATE_TIME = #{entityMap.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.createOperId != null">
+                CREATE_OPER_ID = #{entityMap.createOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.createOperName != null">
+                CREATE_OPER_NAME = #{entityMap.createOperName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.lastUpdTime != null">
+                LAST_UPD_TIME = #{entityMap.lastUpdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.lastUpdOperId != null">
+                LAST_UPD_OPER_ID = #{entityMap.lastUpdOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.lastUpdOperName != null">
+                LAST_UPD_OPER_NAME = #{entityMap.lastUpdOperName,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据条件查找数据 -->
+    <select id="find" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="BaseResultMap">
+        SELECT * FROM CMS_POST WHERE 1=1 ${whereSqlString}
+        <if test="orderBy != null">
+            ${orderBySqlString}
+        </if>
+    </select>
+    
+    <!-- 根据条件查找数据条数 -->
+    <select id="count" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="long" >
+        SELECT COUNT(ID) FROM CMS_POST WHERE 1=1 ${whereSqlString} 
+    </select>
+    
+    <!-- 所有页面条数 -->
+    <select id="countAllPage" resultType="long" >
+        select count(1) FROM CMS_POST WHERE 1=1 
+        and POST_TYPE='page'
+    </select>
+    
+    <!-- 已发布页面条数 -->
+    <select id="countAllPublishPage" resultType="long" >
+        select count(1) FROM CMS_POST WHERE 1=1 
+        and STATUS='V' 
+        and POST_TYPE='page' 
+        and POST_STATUS='pub'
+    </select>
+    
+    <!-- 草稿布页面条数 -->
+    <select id="countAllDraftPage" resultType="long" >
+        select count(1) FROM CMS_POST WHERE 1=1 
+        and STATUS='V' 
+        and POST_TYPE='page' 
+        and POST_STATUS='drt'
+    </select>
+    
+    <!-- 回收站页面条数 -->
+    <select id="countAllDeletePage" resultType="long" >
+        select count(1) FROM CMS_POST WHERE 1=1 
+        and POST_TYPE='page' 
+        and STATUS='I'
+    </select>
+    
+    <resultMap id="CmsPostDTOResultMap" type="com.strawren.jpress.dto.CmsPostDTO">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="OWNER_ID" jdbcType="BIGINT" property="ownerId" />
+        <result column="SHOW_OWNER" jdbcType="VARCHAR" property="showOwner" />
+        <result column="SLUG" jdbcType="VARCHAR" property="slug" />
+        <result column="POST_DATE" jdbcType="TIMESTAMP" property="postDate" />
+        <result column="SHOW_DATE" jdbcType="TIMESTAMP" property="showDate" />
+        <result column="CONTENT" jdbcType="CLOB" property="content" />
+        <result column="TITLE" jdbcType="VARCHAR" property="title" />
+        <result column="EXCERPT" jdbcType="CLOB" property="excerpt" />
+        <result column="POST_STATUS" jdbcType="VARCHAR" property="postStatus" />
+        <result column="COMMENT_STATUS" jdbcType="VARCHAR" property="commentStatus" />
+        <result column="PING_STATUS" jdbcType="VARCHAR" property="pingStatus" />
+        <result column="POST_PWD" jdbcType="VARCHAR" property="postPwd" />
+        <result column="TO_PING" jdbcType="VARCHAR" property="toPing" />
+        <result column="PINGED" jdbcType="VARCHAR" property="pinged" />
+        <result column="FITLERED" jdbcType="VARCHAR" property="fitlered" />
+        <result column="PARENT_ID" jdbcType="BIGINT" property="parentId" />
+        <result column="GUID" jdbcType="VARCHAR" property="guid" />
+        <result column="MENU_ORDER" jdbcType="BIGINT" property="menuOrder" />
+        <result column="POST_TYPE" jdbcType="VARCHAR" property="postType" />
+        <result column="MIME_TYPE" jdbcType="VARCHAR" property="mimeType" />
+        <result column="COMMENT_COUNT" jdbcType="BIGINT" property="commentCount" />
+        <result column="SHOW_ORDER" jdbcType="BIGINT" property="showOrder" />
+        <result column="TOP_FLAG" jdbcType="VARCHAR" property="topFlag" />
+        <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="CREATE_OPER_ID" jdbcType="BIGINT" property="createOperId" />
+        <result column="CREATE_OPER_NAME" jdbcType="VARCHAR" property="createOperName" />
+        <result column="LAST_UPD_TIME" jdbcType="TIMESTAMP" property="lastUpdTime" />
+        <result column="LAST_UPD_OPER_ID" jdbcType="BIGINT" property="lastUpdOperId" />
+        <result column="LAST_UPD_OPER_NAME" jdbcType="VARCHAR" property="lastUpdOperName" />
+    </resultMap>
+    
+    <!-- 根据条件查找数据 -->
+    <select id="searchByTermId" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="CmsPostDTOResultMap">
+        SELECT p.* 
+        FROM CMS_POST p, CMS_TERM_TAXONOMY tt,CMS_TERM_RELATIONSHIP tr
+        WHERE p.status='V' and p.POST_STATUS='pub' 
+        ${whereSqlString} 
+        and tr.TERM_TAXONOMY_ID = tt.id
+        and tr.OBJECT_ID = p.id 
+        <if test="orderBy != null">
+            ${orderBySqlString}
+        </if>
+    </select>
+    
+    <!-- 根据条件查找链接条数 -->
+    <select id="countByTermId" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="long" >
+        select count(1) 
+        FROM CMS_POST p, CMS_TERM_TAXONOMY tt,CMS_TERM_RELATIONSHIP tr 
+        WHERE p.status='V' and p.POST_STATUS='pub' 
+        ${whereSqlString} 
+        and tr.TERM_TAXONOMY_ID = tt.id
+        and tr.OBJECT_ID = p.id 
+    </select>
+    
+</mapper>

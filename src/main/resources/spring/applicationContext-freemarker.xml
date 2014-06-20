@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
-    "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans default-lazy-init="true">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd"
+    default-lazy-init="true">
+	
     <!-- 标签 -->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">  
         <property name="templateLoaderPath" value="/template" />  
         <property name="freemarkerVariables">
             <map>
-                <entry key="webRoot" value="${clivia.portal.webroot}"/>
-                <entry key="adminSiteUrl" value="${clivia.admin.site.url}"/>
+                <entry key="webRoot" value="${portalRoot}"/>
+                <entry key="adminSiteUrl" value="${portalUrl}/${adminPath}"/>
                 <entry key="postMetaTool" value-ref="postMetaTool"/>
                 <entry key="menuNavDirective" value-ref="menuNavDirective"/>
                 <entry key="postListDirective" value-ref="postListDirective"/>
                 <entry key="postDetailDirective" value-ref="postDetailDirective"/>
-                <entry key="vodPlayDirective" value-ref="vodPlayDirective"/>
                 
                 <entry key="gainTermDirective" value-ref="gainTermDirective"/>
                 <entry key="gainTermMetaDirective" value-ref="gainTermMetaDirective"/>
@@ -33,7 +37,7 @@
 	            <!--默认编码 -->
 	            <prop key="default_encoding">UTF-8</prop>  
 	            <!--异常处理 --> 
-	            <prop key="template_exception_handler">com.orientpay.clivia.portal.freemarker.FreemarkerExceptionHandler</prop> 
+	            <prop key="template_exception_handler">com.strawren.bsp.template.FreemarkerExceptionHandler</prop> 
 	            <!-- 正式环境改为更大：如1800(半小时) -->     
 	            <prop key="template_update_delay">2</prop>     
 	            <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop> 

@@ -4,7 +4,6 @@
 	<head>
 		<title>正在载入中...</title>
 	</head>
-	<body bgcolor="#ffffff">
-		<% response.sendRedirect("getStbMac.do"); %>
+	<body bgcolor="#ffffff">dddd
 	</body>
 </html>

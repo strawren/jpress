@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- CmsCommentMapper，评论，对应表CMS_COMMENT -->
+<mapper namespace="com.strawren.jpress.dao.CmsCommentMapper">
+    <!-- 返回结果集Map -->
+    <resultMap id="BaseResultMap" type="com.strawren.jpress.model.CmsComment">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="POST_ID" jdbcType="BIGINT" property="postId" />
+        <result column="AUTHOR_NAME" jdbcType="VARCHAR" property="authorName" />
+        <result column="AUTHOR_EMAIL" jdbcType="VARCHAR" property="authorEmail" />
+        <result column="AUTHOR_URL" jdbcType="VARCHAR" property="authorUrl" />
+        <result column="AUTHOR_IP" jdbcType="VARCHAR" property="authorIp" />
+        <result column="COMMENT_DATE" jdbcType="TIMESTAMP" property="commentDate" />
+        <result column="CONTENT" jdbcType="CLOB" property="content" />
+        <result column="COMMENT_KARMA" jdbcType="BIGINT" property="commentKarma" />
+        <result column="APPROVED_FLAG" jdbcType="VARCHAR" property="approvedFlag" />
+        <result column="AUTHOR_AGENT" jdbcType="VARCHAR" property="authorAgent" />
+        <result column="COMMENT_TYPE" jdbcType="VARCHAR" property="commentType" />
+        <result column="PARENT_ID" jdbcType="BIGINT" property="parentId" />
+        <result column="USER_ID" jdbcType="BIGINT" property="userId" />
+        <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="CREATE_OPER_ID" jdbcType="BIGINT" property="createOperId" />
+        <result column="CREATE_OPER_NAME" jdbcType="VARCHAR" property="createOperName" />
+        <result column="LAST_UPD_TIME" jdbcType="TIMESTAMP" property="lastUpdTime" />
+        <result column="LAST_UPD_OPER_ID" jdbcType="BIGINT" property="lastUpdOperId" />
+        <result column="LAST_UPD_OPER_NAME" jdbcType="VARCHAR" property="lastUpdOperName" />
+    </resultMap>
+    
+    <!-- 保存数据 -->
+    <insert id="save" parameterType="com.strawren.jpress.model.CmsComment">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+        SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into CMS_COMMENT (
+            ID,
+            POST_ID,
+            AUTHOR_NAME,
+            AUTHOR_EMAIL,
+            AUTHOR_URL,
+            AUTHOR_IP,
+            COMMENT_DATE,
+            CONTENT,
+            COMMENT_KARMA,
+            APPROVED_FLAG,
+            AUTHOR_AGENT,
+            COMMENT_TYPE,
+            PARENT_ID,
+            USER_ID,
+            MISC_DESC,
+            STATUS,
+            CREATE_TIME,
+            CREATE_OPER_ID,
+            CREATE_OPER_NAME,
+            LAST_UPD_TIME,
+            LAST_UPD_OPER_ID,
+            LAST_UPD_OPER_NAME
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{postId,jdbcType=BIGINT},
+            #{authorName,jdbcType=VARCHAR},
+            #{authorEmail,jdbcType=VARCHAR},
+            #{authorUrl,jdbcType=VARCHAR},
+            #{authorIp,jdbcType=VARCHAR},
+            #{commentDate,jdbcType=TIMESTAMP},
+            #{content,jdbcType=CLOB},
+            #{commentKarma,jdbcType=BIGINT},
+            #{approvedFlag,jdbcType=VARCHAR},
+            #{authorAgent,jdbcType=VARCHAR},
+            #{commentType,jdbcType=VARCHAR},
+            #{parentId,jdbcType=BIGINT},
+            #{userId,jdbcType=BIGINT},
+            #{miscDesc,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{createOperId,jdbcType=BIGINT},
+            #{createOperName,jdbcType=VARCHAR},
+            #{lastUpdTime,jdbcType=TIMESTAMP},
+            #{lastUpdOperId,jdbcType=BIGINT},
+            #{lastUpdOperName,jdbcType=VARCHAR}
+        )
+    </insert>
+    
+      <!-- 根据主键取得数据 -->
+    <select id="get" parameterType="long" resultMap="BaseResultMap">
+        select * from CMS_COMMENT where ID = #{id,jdbcType=BIGINT}
+    </select>
+  
+      <!-- 删除数据 -->
+    <delete id="delete" parameterType="long">
+        delete from CMS_COMMENT where ID = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 更新数据 -->
+    <update id="update" parameterType="com.strawren.jpress.model.CmsComment">
+        update CMS_COMMENT
+        <set>
+            <if test="entityMap.postId != null">
+                POST_ID = #{entityMap.postId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.authorName != null">
+                AUTHOR_NAME = #{entityMap.authorName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.authorEmail != null">
+                AUTHOR_EMAIL = #{entityMap.authorEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.authorUrl != null">
+                AUTHOR_URL = #{entityMap.authorUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.authorIp != null">
+                AUTHOR_IP = #{entityMap.authorIp,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.commentDate != null">
+                COMMENT_DATE = #{entityMap.commentDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.content != null">
+                CONTENT = #{entityMap.content,jdbcType=CLOB},
+            </if>
+            <if test="entityMap.commentKarma != null">
+                COMMENT_KARMA = #{entityMap.commentKarma,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.approvedFlag != null">
+                APPROVED_FLAG = #{entityMap.approvedFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.authorAgent != null">
+                AUTHOR_AGENT = #{entityMap.authorAgent,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.commentType != null">
+                COMMENT_TYPE = #{entityMap.commentType,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.parentId != null">
+                PARENT_ID = #{entityMap.parentId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.userId != null">
+                USER_ID = #{entityMap.userId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.miscDesc != null">
+                MISC_DESC = #{entityMap.miscDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.status != null">
+                STATUS = #{entityMap.status,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.createTime != null">
+                CREATE_TIME = #{entityMap.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.createOperId != null">
+                CREATE_OPER_ID = #{entityMap.createOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.createOperName != null">
+                CREATE_OPER_NAME = #{entityMap.createOperName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.lastUpdTime != null">
+                LAST_UPD_TIME = #{entityMap.lastUpdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.lastUpdOperId != null">
+                LAST_UPD_OPER_ID = #{entityMap.lastUpdOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.lastUpdOperName != null">
+                LAST_UPD_OPER_NAME = #{entityMap.lastUpdOperName,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据条件查找数据 -->
+    <select id="find" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="BaseResultMap">
+        SELECT * FROM CMS_COMMENT WHERE 1=1 ${whereSqlString}
+        <if test="orderBy != null">
+            ${orderBySqlString}
+        </if>
+    </select>
+    
+    <!-- 根据条件查找数据条数 -->
+    <select id="count" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="long" >
+        SELECT COUNT(ID) FROM CMS_COMMENT WHERE 1=1 ${whereSqlString} 
+    </select>
+</mapper>

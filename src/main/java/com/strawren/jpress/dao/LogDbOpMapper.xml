@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- LogDbOpMapper，数据库操作日志，通过AOP来实现的，对应表LOG_DB_OP -->
+<mapper namespace="com.strawren.jpress.dao.LogDbOpMapper">
+    <!-- 返回结果集Map -->
+    <resultMap id="BaseResultMap" type="com.strawren.jpress.model.LogDbOp">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="ACTION_TYPE" jdbcType="VARCHAR" property="actionType" />
+        <result column="SERVICE_NAME" jdbcType="VARCHAR" property="serviceName" />
+        <result column="DAO_NAME" jdbcType="VARCHAR" property="daoName" />
+        <result column="REQ_USER_ID" jdbcType="BIGINT" property="reqUserId" />
+        <result column="REQ_USER_NAME" jdbcType="VARCHAR" property="reqUserName" />
+        <result column="REQ_OPER_ID" jdbcType="BIGINT" property="reqOperId" />
+        <result column="REQ_OPER_NAME" jdbcType="VARCHAR" property="reqOperName" />
+        <result column="BEFORE_DATA" jdbcType="CLOB" property="beforeData" />
+        <result column="AFTER_DATA" jdbcType="CLOB" property="afterData" />
+        <result column="OP_SUMMARY" jdbcType="VARCHAR" property="opSummary" />
+        <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="CREATE_OPER_ID" jdbcType="BIGINT" property="createOperId" />
+        <result column="CREATE_OPER_NAME" jdbcType="VARCHAR" property="createOperName" />
+        <result column="LAST_UPD_TIME" jdbcType="TIMESTAMP" property="lastUpdTime" />
+        <result column="LAST_UPD_OPER_ID" jdbcType="BIGINT" property="lastUpdOperId" />
+        <result column="LAST_UPD_OPER_NAME" jdbcType="VARCHAR" property="lastUpdOperName" />
+    </resultMap>
+    
+    <!-- 保存数据 -->
+    <insert id="save" parameterType="com.strawren.jpress.model.LogDbOp">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+        SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into LOG_DB_OP (
+            ID,
+            ACTION_TYPE,
+            SERVICE_NAME,
+            DAO_NAME,
+            REQ_USER_ID,
+            REQ_USER_NAME,
+            REQ_OPER_ID,
+            REQ_OPER_NAME,
+            BEFORE_DATA,
+            AFTER_DATA,
+            OP_SUMMARY,
+            MISC_DESC,
+            STATUS,
+            CREATE_TIME,
+            CREATE_OPER_ID,
+            CREATE_OPER_NAME,
+            LAST_UPD_TIME,
+            LAST_UPD_OPER_ID,
+            LAST_UPD_OPER_NAME
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{actionType,jdbcType=VARCHAR},
+            #{serviceName,jdbcType=VARCHAR},
+            #{daoName,jdbcType=VARCHAR},
+            #{reqUserId,jdbcType=BIGINT},
+            #{reqUserName,jdbcType=VARCHAR},
+            #{reqOperId,jdbcType=BIGINT},
+            #{reqOperName,jdbcType=VARCHAR},
+            #{beforeData,jdbcType=CLOB},
+            #{afterData,jdbcType=CLOB},
+            #{opSummary,jdbcType=VARCHAR},
+            #{miscDesc,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{createOperId,jdbcType=BIGINT},
+            #{createOperName,jdbcType=VARCHAR},
+            #{lastUpdTime,jdbcType=TIMESTAMP},
+            #{lastUpdOperId,jdbcType=BIGINT},
+            #{lastUpdOperName,jdbcType=VARCHAR}
+        )
+    </insert>
+    
+      <!-- 根据主键取得数据 -->
+    <select id="get" parameterType="long" resultMap="BaseResultMap">
+        select * from LOG_DB_OP where ID = #{id,jdbcType=BIGINT}
+    </select>
+  
+      <!-- 删除数据 -->
+    <delete id="delete" parameterType="long">
+        delete from LOG_DB_OP where ID = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 更新数据 -->
+    <update id="update" parameterType="com.strawren.jpress.model.LogDbOp">
+        update LOG_DB_OP
+        <set>
+            <if test="entityMap.actionType != null">
+                ACTION_TYPE = #{entityMap.actionType,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.serviceName != null">
+                SERVICE_NAME = #{entityMap.serviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.daoName != null">
+                DAO_NAME = #{entityMap.daoName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.reqUserId != null">
+                REQ_USER_ID = #{entityMap.reqUserId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.reqUserName != null">
+                REQ_USER_NAME = #{entityMap.reqUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.reqOperId != null">
+                REQ_OPER_ID = #{entityMap.reqOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.reqOperName != null">
+                REQ_OPER_NAME = #{entityMap.reqOperName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.beforeData != null">
+                BEFORE_DATA = #{entityMap.beforeData,jdbcType=CLOB},
+            </if>
+            <if test="entityMap.afterData != null">
+                AFTER_DATA = #{entityMap.afterData,jdbcType=CLOB},
+            </if>
+            <if test="entityMap.opSummary != null">
+                OP_SUMMARY = #{entityMap.opSummary,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.miscDesc != null">
+                MISC_DESC = #{entityMap.miscDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.status != null">
+                STATUS = #{entityMap.status,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.createTime != null">
+                CREATE_TIME = #{entityMap.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.createOperId != null">
+                CREATE_OPER_ID = #{entityMap.createOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.createOperName != null">
+                CREATE_OPER_NAME = #{entityMap.createOperName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.lastUpdTime != null">
+                LAST_UPD_TIME = #{entityMap.lastUpdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.lastUpdOperId != null">
+                LAST_UPD_OPER_ID = #{entityMap.lastUpdOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.lastUpdOperName != null">
+                LAST_UPD_OPER_NAME = #{entityMap.lastUpdOperName,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据条件查找数据 -->
+    <select id="find" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="BaseResultMap">
+        SELECT * FROM LOG_DB_OP WHERE 1=1 ${whereSqlString}
+        <if test="orderBy != null">
+            ${orderBySqlString}
+        </if>
+    </select>
+    
+    <!-- 根据条件查找数据条数 -->
+    <select id="count" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="long" >
+        SELECT COUNT(ID) FROM LOG_DB_OP WHERE 1=1 ${whereSqlString} 
+    </select>
+</mapper>

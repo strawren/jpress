@@ -4,29 +4,40 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springmodules.org/validation/bean/validator http://www.springmodules.org/validation/bean/validator.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springmodules.org/validation/bean/validator http://www.springmodules.org/validation/bean/validator.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd"
 	default-lazy-init="true">
 	<!-- refer: http://liuqq.iteye.com/blog/732866 -->
 	
 	<description>Apache Shiro安全配置</description>
 	
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager"> 
-    	<property name="realm" ref="oecsRealm" />  
+    	<property name="realm" ref="jpressRealm" />  
 	</bean>
 
-	<bean id="oecsRealm" class="com.orientpay.clivia.component.security.OecsShiroRealm" />
+	<bean id="jpressRealm" class="com.strawren.jpress.security.JpressShiroRealm" />
+	
+	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+		
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+    	<property name="securityManager" ref="securityManager"/>
+	</bean>
 	
 	<!-- Shiro Filter -->  
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">         
 	    <property name="securityManager" ref="securityManager"/>         
-	    <property name="loginUrl" value="/login" />  
-    	<property name="successUrl" value="/index.html" />  
-    	<property name="unauthorizedUrl" value="/login.jsp?error=true" />  
-    	<property name="filterChainDefinitions">  
-        	<value>  
-	            /login* = anon  
-	            /**.html* = authc  
-	        </value>
-	    </property>
+	    <property name="loginUrl" value="${adminPath}/login.action" />  
+    	<property name="successUrl" value="${adminPath}/index.action" />  
+    	<property name="unauthorizedUrl" value="${adminPath}/login.action?error=true" />  
+		<property name="filterChainDefinitions">
+			<value>
+				/static/** = anon
+				/userfiles/** = anon
+				${adminPath}/random.action* = anon
+				${adminPath}/login.action?* = authc
+				${adminPath}/logout.action = logout
+				${adminPath}/*.action* = user
+		 	</value>
+		</property>
   	</bean>
 </beans>

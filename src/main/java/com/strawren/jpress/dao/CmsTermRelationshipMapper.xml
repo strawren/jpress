@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- CmsTermRelationshipMapper，存储每个文章、链接和对应分类的关系
+
+Posts are associated with categories and tags from the wp_terms table and this association is maintained in the wp_term_relationships table. The association of links to their respective categories are also kept in this table.，对应表CMS_TERM_RELATIONSHIP -->
+<mapper namespace="com.strawren.jpress.dao.CmsTermRelationshipMapper">
+    <!-- 返回结果集Map -->
+    <resultMap id="BaseResultMap" type="com.strawren.jpress.model.CmsTermRelationship">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="TERM_TAXONOMY_ID" jdbcType="BIGINT" property="termTaxonomyId" />
+        <result column="OBJECT_ID" jdbcType="BIGINT" property="objectId" />
+        <result column="TERM_ORDER" jdbcType="BIGINT" property="termOrder" />
+        <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="CREATE_OPER_ID" jdbcType="BIGINT" property="createOperId" />
+        <result column="CREATE_OPER_NAME" jdbcType="VARCHAR" property="createOperName" />
+        <result column="LAST_UPD_TIME" jdbcType="TIMESTAMP" property="lastUpdTime" />
+        <result column="LAST_UPD_OPER_ID" jdbcType="BIGINT" property="lastUpdOperId" />
+        <result column="LAST_UPD_OPER_NAME" jdbcType="VARCHAR" property="lastUpdOperName" />
+    </resultMap>
+    
+    <!-- 保存数据 -->
+    <insert id="save" parameterType="com.strawren.jpress.model.CmsTermRelationship">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+        SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into CMS_TERM_RELATIONSHIP (
+            ID,
+            TERM_TAXONOMY_ID,
+            OBJECT_ID,
+            TERM_ORDER,
+            MISC_DESC,
+            STATUS,
+            CREATE_TIME,
+            CREATE_OPER_ID,
+            CREATE_OPER_NAME,
+            LAST_UPD_TIME,
+            LAST_UPD_OPER_ID,
+            LAST_UPD_OPER_NAME
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{termTaxonomyId,jdbcType=BIGINT},
+            #{objectId,jdbcType=BIGINT},
+            #{termOrder,jdbcType=BIGINT},
+            #{miscDesc,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{createOperId,jdbcType=BIGINT},
+            #{createOperName,jdbcType=VARCHAR},
+            #{lastUpdTime,jdbcType=TIMESTAMP},
+            #{lastUpdOperId,jdbcType=BIGINT},
+            #{lastUpdOperName,jdbcType=VARCHAR}
+        )
+    </insert>
+    
+      <!-- 根据主键取得数据 -->
+    <select id="get" parameterType="long" resultMap="BaseResultMap">
+        select * from CMS_TERM_RELATIONSHIP where ID = #{id,jdbcType=BIGINT}
+    </select>
+  
+      <!-- 删除数据 -->
+    <delete id="delete" parameterType="long">
+        delete from CMS_TERM_RELATIONSHIP where ID = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 更新数据 -->
+    <update id="update" parameterType="com.strawren.jpress.model.CmsTermRelationship">
+        update CMS_TERM_RELATIONSHIP
+        <set>
+            <if test="entityMap.termTaxonomyId != null">
+                TERM_TAXONOMY_ID = #{entityMap.termTaxonomyId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.objectId != null">
+                OBJECT_ID = #{entityMap.objectId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.termOrder != null">
+                TERM_ORDER = #{entityMap.termOrder,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.miscDesc != null">
+                MISC_DESC = #{entityMap.miscDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.status != null">
+                STATUS = #{entityMap.status,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.createTime != null">
+                CREATE_TIME = #{entityMap.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.createOperId != null">
+                CREATE_OPER_ID = #{entityMap.createOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.createOperName != null">
+                CREATE_OPER_NAME = #{entityMap.createOperName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.lastUpdTime != null">
+                LAST_UPD_TIME = #{entityMap.lastUpdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.lastUpdOperId != null">
+                LAST_UPD_OPER_ID = #{entityMap.lastUpdOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.lastUpdOperName != null">
+                LAST_UPD_OPER_NAME = #{entityMap.lastUpdOperName,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据条件查找数据 -->
+    <select id="find" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="BaseResultMap">
+        SELECT * FROM CMS_TERM_RELATIONSHIP WHERE 1=1 ${whereSqlString}
+        <if test="orderBy != null">
+            ${orderBySqlString}
+        </if>
+    </select>
+    
+    <!-- 根据条件查找数据条数 -->
+    <select id="count" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="long" >
+        SELECT COUNT(ID) FROM CMS_TERM_RELATIONSHIP WHERE 1=1 ${whereSqlString} 
+    </select>
+    
+    
+    <update id="updateTermTaxonomyId" parameterType="java.util.Map">
+        update CMS_TERM_RELATIONSHIP 
+        set TERM_TAXONOMY_ID=#{termTaxonomyId,jdbcType=BIGINT} 
+        where OBJECT_ID = #{linkId,jdbcType=BIGINT}
+    </update>
+    
+    <!-- 根据objectId 删除CmsTermRelationship-->
+    <delete id="delByObjId" parameterType="long">
+        delete from CMS_TERM_RELATIONSHIP where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+    </delete>
+    
+</mapper>

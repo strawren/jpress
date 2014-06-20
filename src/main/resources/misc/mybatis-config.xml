@@ -3,8 +3,8 @@
 
 <configuration>
 	<plugins>
-		<plugin interceptor="com.orientpay.clivia.component.core.PaginationInterceptor">
-			<property name="dialect" value="com.orientpay.oecs.framework.orm.dialect.OracleDialect" />
+		<plugin interceptor="com.strawren.bsp.orm.mybatis.PaginationInterceptor">
+			<property name="dialect" value="com.strawren.bsp.orm.dialect.MySQLDialect" />
 		</plugin>
 	</plugins>
 </configuration>  

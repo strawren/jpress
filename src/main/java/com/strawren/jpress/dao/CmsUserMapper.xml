@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- CmsUserMapper，用户，对应表CMS_USER -->
+<mapper namespace="com.strawren.jpress.dao.CmsUserMapper">
+    <!-- 返回结果集Map -->
+    <resultMap id="BaseResultMap" type="com.strawren.jpress.model.CmsUser">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="LOGIN_NAME" jdbcType="VARCHAR" property="loginName" />
+        <result column="LOGIN_PWD" jdbcType="VARCHAR" property="loginPwd" />
+        <result column="NICKNAME" jdbcType="VARCHAR" property="nickname" />
+        <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+        <result column="SHOW_NAME" jdbcType="VARCHAR" property="showName" />
+        <result column="USER_EMAIL" jdbcType="VARCHAR" property="userEmail" />
+        <result column="USER_URL" jdbcType="VARCHAR" property="userUrl" />
+        <result column="REGISTER_DATE" jdbcType="TIMESTAMP" property="registerDate" />
+        <result column="SERIAL_KEY" jdbcType="VARCHAR" property="serialKey" />
+        <result column="USER_STATUS" jdbcType="VARCHAR" property="userStatus" />
+        <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="CREATE_OPER_ID" jdbcType="BIGINT" property="createOperId" />
+        <result column="CREATE_OPER_NAME" jdbcType="VARCHAR" property="createOperName" />
+        <result column="LAST_UPD_TIME" jdbcType="TIMESTAMP" property="lastUpdTime" />
+        <result column="LAST_UPD_OPER_ID" jdbcType="BIGINT" property="lastUpdOperId" />
+        <result column="LAST_UPD_OPER_NAME" jdbcType="VARCHAR" property="lastUpdOperName" />
+    </resultMap>
+    
+    <!-- 保存数据 -->
+    <insert id="save" parameterType="com.strawren.jpress.model.CmsUser">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+        SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into CMS_USER (
+            ID,
+            LOGIN_NAME,
+            LOGIN_PWD,
+            NICKNAME,
+            USER_NAME,
+            SHOW_NAME,
+            USER_EMAIL,
+            USER_URL,
+            REGISTER_DATE,
+            SERIAL_KEY,
+            USER_STATUS,
+            MISC_DESC,
+            STATUS,
+            CREATE_TIME,
+            CREATE_OPER_ID,
+            CREATE_OPER_NAME,
+            LAST_UPD_TIME,
+            LAST_UPD_OPER_ID,
+            LAST_UPD_OPER_NAME
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{loginName,jdbcType=VARCHAR},
+            #{loginPwd,jdbcType=VARCHAR},
+            #{nickname,jdbcType=VARCHAR},
+            #{userName,jdbcType=VARCHAR},
+            #{showName,jdbcType=VARCHAR},
+            #{userEmail,jdbcType=VARCHAR},
+            #{userUrl,jdbcType=VARCHAR},
+            #{registerDate,jdbcType=TIMESTAMP},
+            #{serialKey,jdbcType=VARCHAR},
+            #{userStatus,jdbcType=VARCHAR},
+            #{miscDesc,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{createOperId,jdbcType=BIGINT},
+            #{createOperName,jdbcType=VARCHAR},
+            #{lastUpdTime,jdbcType=TIMESTAMP},
+            #{lastUpdOperId,jdbcType=BIGINT},
+            #{lastUpdOperName,jdbcType=VARCHAR}
+        )
+    </insert>
+    
+      <!-- 根据主键取得数据 -->
+    <select id="get" parameterType="long" resultMap="BaseResultMap">
+        select * from CMS_USER where ID = #{id,jdbcType=BIGINT}
+    </select>
+  
+      <!-- 删除数据 -->
+    <delete id="delete" parameterType="long">
+        delete from CMS_USER where ID = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 更新数据 -->
+    <update id="update" parameterType="com.strawren.jpress.model.CmsUser">
+        update CMS_USER
+        <set>
+            <if test="entityMap.loginName != null">
+                LOGIN_NAME = #{entityMap.loginName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.loginPwd != null">
+                LOGIN_PWD = #{entityMap.loginPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.nickname != null">
+                NICKNAME = #{entityMap.nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.userName != null">
+                USER_NAME = #{entityMap.userName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.showName != null">
+                SHOW_NAME = #{entityMap.showName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.userEmail != null">
+                USER_EMAIL = #{entityMap.userEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.userUrl != null">
+                USER_URL = #{entityMap.userUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.registerDate != null">
+                REGISTER_DATE = #{entityMap.registerDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.serialKey != null">
+                SERIAL_KEY = #{entityMap.serialKey,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.userStatus != null">
+                USER_STATUS = #{entityMap.userStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.miscDesc != null">
+                MISC_DESC = #{entityMap.miscDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.status != null">
+                STATUS = #{entityMap.status,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.createTime != null">
+                CREATE_TIME = #{entityMap.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.createOperId != null">
+                CREATE_OPER_ID = #{entityMap.createOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.createOperName != null">
+                CREATE_OPER_NAME = #{entityMap.createOperName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.lastUpdTime != null">
+                LAST_UPD_TIME = #{entityMap.lastUpdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.lastUpdOperId != null">
+                LAST_UPD_OPER_ID = #{entityMap.lastUpdOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.lastUpdOperName != null">
+                LAST_UPD_OPER_NAME = #{entityMap.lastUpdOperName,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据条件查找数据 -->
+    <select id="find" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="BaseResultMap">
+        SELECT * FROM CMS_USER WHERE 1=1 ${whereSqlString}
+        <if test="orderBy != null">
+            ${orderBySqlString}
+        </if>
+    </select>
+    
+    <!-- 根据条件查找数据条数 -->
+    <select id="count" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="long" >
+        SELECT COUNT(ID) FROM CMS_USER WHERE 1=1 ${whereSqlString} 
+    </select>
+</mapper>

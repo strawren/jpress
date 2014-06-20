@@ -1,0 +1,111 @@
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,p,blockquote,th,td{margin:0;padding:0;}
+
+.header {
+	background: #1C3A70 url(../images/gradsprite.gif) repeat-x scroll;
+	height: 45px;
+}
+
+.title_font {
+	height: 36px;
+	line-height: 36px;
+	overflow: hidden;
+	float: left;
+	padding-left: 20px;
+	font-size: 20px;
+	font-weight: bold;
+	color: white;
+}
+
+#contentWrapper {
+	width: 800px;
+	height: 420px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-top: -210px;
+	margin-left: -400px;
+	font-size: 12px;
+}
+
+#contentWrapper span{
+	font-size: 12px;
+}
+
+#contentWrapper td{
+	font-size: 12px;
+}
+
+.login_left_desc {
+	width: 302px;
+}
+
+.loginForm {
+	padding: 50px 0px 30px 0px;
+	border: 1px solid rgb(204, 204, 204);
+	background: transparent url(../images/loginFormBg.gif) no-repeat
+		scroll 0% 0%;
+	text-align: right;
+	-moz-background-clip: -moz-initial;
+	-moz-background-origin: -moz-initial;
+	-moz-background-inline-policy: -moz-initial;
+	font-size: 12px;
+	width: 418px;
+}
+
+.inputfield {
+	width: 200px;
+	height: 17px !important;
+	height: 21px;
+	border: 1px solid #999999;
+}
+
+.formLabel {
+	width: 60px;
+	vertical-align: top;
+	padding-top: 5px;
+}
+
+.validateInputTD {
+	vertical-align: top;
+}
+
+.validateInput {
+	width: 80px;
+	height: 17px !important;
+	height: 21px;
+	border: 1px solid #999999;
+}
+
+.validateImg {
+	vertical-align: top;
+}
+
+.vbErrorDiv {
+	color: #898989;
+	height: 14px;
+}
+
+.footer {
+	text-align: center;
+	color: #999999;
+	font-size: 13px;
+	line-height: 25px;
+	vertical-align: middle;
+	overflow: hidden;
+	height: 25px;
+}
+
+.footer span {
+	color: #999999;
+	font-size: 13px;
+}
+
+.footer a {
+	color: #999999;
+	margin: 0px 5px;
+	text-decoration: none;
+}
+
+.footer a:hover {
+	text-decoration: underline;
+}

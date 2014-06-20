@@ -4,28 +4,66 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
     xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
     xmlns:aop="http://www.springframework.org/schema/aop"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd"
     default-lazy-init="true">
     
-     <context:property-placeholder location="classpath:system.properties"/>
-    <!--
-  <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-      <property name="jndiName">
-      <value>java:comp/env/OECS_G2_CLIVIA_DS</value>
-      </property>
-  </bean>
-     -->
-  <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-      <property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
-      <property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.200.237:1521:tvbs" />
-      <property name="user" value="CLIVIA_G24DEV" />
-      <property name="password" value="CLIVIA_G24DEV" />
-      <property name="initialPoolSize" value="10" />
-      <property name="minPoolSize" value="10" />
-      <property name="maxPoolSize" value="100" />
-      <property name="testConnectionOnCheckin" value="false" />
-      <property name="idleConnectionTestPeriod" value="60" />
-      <property name="checkoutTimeout" value="3000" />
-      <property name="preferredTestQuery" value="SELECT * from dual" />
-  </bean>
+	<!--
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+	    <value>java:comp/env/OECS_G2_CLIVIA_DS</value>
+	    </property>
+	</bean>
+    -->
+   
+   <bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<property name="url" value="${jdbcUrl}" />
+		<property name="username" value="${jdbcUserName}" />
+		<property name="password" value="${jdbcPassword}" />
+
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="0" />
+		<!-- 连接池最大使用连接数量 -->
+		<property name="maxActive" value="20" />
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="0" />
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="60000" />
+
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize" value="33" />
+
+		<property name="validationQuery" value="SELECT 1" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="testWhileIdle" value="true" />
+
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="25200000" />
+	
+		<!-- 打开removeAbandoned功能 -->
+		<property name="removeAbandoned" value="true" />
+		<!-- 1800秒，也就是30分钟 -->
+		<property name="removeAbandonedTimeout" value="1800" />
+		<!-- 关闭abanded连接时输出错误日志 -->
+		<property name="logAbandoned" value="true" /> 
+	
+		<!-- 监控数据库 -->
+		<property name="filters" value="mergeStat" />
+	</bean>
+	 
+	 <!-- 配置druid监控spring jdbc -->
+	<bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor" />
+	<bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
+		<property name="patterns">
+			<list>
+				<value>com.strawren.jpress.service.*</value>
+			</list>
+		</property>
+	</bean>
+	<aop:config>
+		<aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
+	</aop:config>
+	
 </beans>

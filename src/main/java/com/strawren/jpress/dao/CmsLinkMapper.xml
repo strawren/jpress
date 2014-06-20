@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- CmsLinkMapper，链接，对应表CMS_LINK -->
+<mapper namespace="com.strawren.jpress.dao.CmsLinkMapper">
+    <!-- 返回结果集Map -->
+    <resultMap id="BaseResultMap" type="com.strawren.jpress.model.CmsLink">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="URL" jdbcType="VARCHAR" property="url" />
+        <result column="NAME" jdbcType="VARCHAR" property="name" />
+        <result column="IMAGE" jdbcType="VARCHAR" property="image" />
+        <result column="TARGET" jdbcType="VARCHAR" property="target" />
+        <result column="ALT" jdbcType="VARCHAR" property="alt" />
+        <result column="VISIBLE" jdbcType="VARCHAR" property="visible" />
+        <result column="OWNER_ID" jdbcType="BIGINT" property="ownerId" />
+        <result column="RATING" jdbcType="BIGINT" property="rating" />
+        <result column="REL" jdbcType="VARCHAR" property="rel" />
+        <result column="NOTES" jdbcType="VARCHAR" property="notes" />
+        <result column="RSS" jdbcType="VARCHAR" property="rss" />
+        <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="CREATE_OPER_ID" jdbcType="BIGINT" property="createOperId" />
+        <result column="CREATE_OPER_NAME" jdbcType="VARCHAR" property="createOperName" />
+        <result column="LAST_UPD_TIME" jdbcType="TIMESTAMP" property="lastUpdTime" />
+        <result column="LAST_UPD_OPER_ID" jdbcType="BIGINT" property="lastUpdOperId" />
+        <result column="LAST_UPD_OPER_NAME" jdbcType="VARCHAR" property="lastUpdOperName" />
+    </resultMap>
+    
+    <!-- 保存数据 -->
+    <insert id="save" parameterType="com.strawren.jpress.model.CmsLink">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+        SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into CMS_LINK (
+            ID,
+            URL,
+            NAME,
+            IMAGE,
+            TARGET,
+            ALT,
+            VISIBLE,
+            OWNER_ID,
+            RATING,
+            REL,
+            NOTES,
+            RSS,
+            MISC_DESC,
+            STATUS,
+            CREATE_TIME,
+            CREATE_OPER_ID,
+            CREATE_OPER_NAME,
+            LAST_UPD_TIME,
+            LAST_UPD_OPER_ID,
+            LAST_UPD_OPER_NAME
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{url,jdbcType=VARCHAR},
+            #{name,jdbcType=VARCHAR},
+            #{image,jdbcType=VARCHAR},
+            #{target,jdbcType=VARCHAR},
+            #{alt,jdbcType=VARCHAR},
+            #{visible,jdbcType=VARCHAR},
+            #{ownerId,jdbcType=BIGINT},
+            #{rating,jdbcType=BIGINT},
+            #{rel,jdbcType=VARCHAR},
+            #{notes,jdbcType=VARCHAR},
+            #{rss,jdbcType=VARCHAR},
+            #{miscDesc,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{createOperId,jdbcType=BIGINT},
+            #{createOperName,jdbcType=VARCHAR},
+            #{lastUpdTime,jdbcType=TIMESTAMP},
+            #{lastUpdOperId,jdbcType=BIGINT},
+            #{lastUpdOperName,jdbcType=VARCHAR}
+        )
+    </insert>
+    
+      <!-- 根据主键取得数据 -->
+    <select id="get" parameterType="long" resultMap="BaseResultMap">
+        select * from CMS_LINK where ID = #{id,jdbcType=BIGINT}
+    </select>
+  
+      <!-- 删除数据 -->
+    <delete id="delete" parameterType="long">
+        delete from CMS_LINK where ID = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 更新数据 -->
+    <update id="update" parameterType="com.strawren.jpress.model.CmsLink">
+        update CMS_LINK
+        <set>
+            <if test="entityMap.url != null">
+                URL = #{entityMap.url,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.name != null">
+                NAME = #{entityMap.name,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.image != null">
+                IMAGE = #{entityMap.image,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.target != null">
+                TARGET = #{entityMap.target,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.alt != null">
+                ALT = #{entityMap.alt,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.visible != null">
+                VISIBLE = #{entityMap.visible,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.ownerId != null">
+                OWNER_ID = #{entityMap.ownerId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.rating != null">
+                RATING = #{entityMap.rating,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.rel != null">
+                REL = #{entityMap.rel,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.notes != null">
+                NOTES = #{entityMap.notes,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.rss != null">
+                RSS = #{entityMap.rss,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.miscDesc != null">
+                MISC_DESC = #{entityMap.miscDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.status != null">
+                STATUS = #{entityMap.status,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.createTime != null">
+                CREATE_TIME = #{entityMap.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.createOperId != null">
+                CREATE_OPER_ID = #{entityMap.createOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.createOperName != null">
+                CREATE_OPER_NAME = #{entityMap.createOperName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.lastUpdTime != null">
+                LAST_UPD_TIME = #{entityMap.lastUpdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.lastUpdOperId != null">
+                LAST_UPD_OPER_ID = #{entityMap.lastUpdOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.lastUpdOperName != null">
+                LAST_UPD_OPER_NAME = #{entityMap.lastUpdOperName,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据条件查找数据 -->
+    <select id="find" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="BaseResultMap">
+        SELECT * FROM CMS_LINK WHERE 1=1 ${whereSqlString}
+        <if test="orderBy != null">
+            ${orderBySqlString}
+        </if>
+    </select>
+    
+    <!-- 根据条件查找数据条数 -->
+    <select id="count" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="long" >
+        SELECT COUNT(ID) FROM CMS_LINK WHERE 1=1 ${whereSqlString} 
+    </select>
+    
+        <!-- 返回结果集Map -->
+    <resultMap id="LinkDTOResultMap" type="com.strawren.jpress.dto.CmsLinkDTO">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="URL" jdbcType="VARCHAR" property="url" />
+        <result column="NAME" jdbcType="VARCHAR" property="name" />
+        <result column="IMAGE" jdbcType="VARCHAR" property="image" />
+        <result column="TARGET" jdbcType="VARCHAR" property="target" />
+        <result column="ALT" jdbcType="VARCHAR" property="alt" />
+        <result column="VISIBLE" jdbcType="VARCHAR" property="visible" />
+        <result column="OWNER_ID" jdbcType="BIGINT" property="ownerId" />
+        <result column="RATING" jdbcType="BIGINT" property="rating" />
+        <result column="REL" jdbcType="VARCHAR" property="rel" />
+        <result column="NOTES" jdbcType="VARCHAR" property="notes" />
+        <result column="RSS" jdbcType="VARCHAR" property="rss" />
+        <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="CREATE_OPER_ID" jdbcType="BIGINT" property="createOperId" />
+        <result column="CREATE_OPER_NAME" jdbcType="VARCHAR" property="createOperName" />
+        <result column="LAST_UPD_TIME" jdbcType="TIMESTAMP" property="lastUpdTime" />
+        <result column="LAST_UPD_OPER_ID" jdbcType="BIGINT" property="lastUpdOperId" />
+        <result column="LAST_UPD_OPER_NAME" jdbcType="VARCHAR" property="lastUpdOperName" />
+        <result column="termTaxonomyId" jdbcType="BIGINT" property="termTaxonomyId" />
+        <result column="linkCategoryId" jdbcType="BIGINT" property="linkCategoryId" />
+        <result column="linkCategoryName" jdbcType="VARCHAR" property="linkCategoryName" />
+    </resultMap>
+    
+    <!-- 获取所有链接分类目录 -->
+    <select id="findAllLink" parameterType="java.lang.String" resultMap="LinkDTOResultMap" >
+        select l.*,tt.id as termTaxonomyId,t.id as linkCategoryId,t.name as linkCategoryName 
+        from cms_link l,cms_term t, cms_term_taxonomy tt,cms_term_relationship tr 
+        where l.status='V' 
+        and tr.object_id = l.id 
+        and tr.term_taxonomy_id = tt.id 
+        and t.id=tt.TERM_ID 
+        and tt.taxonomy='lnk' 
+        <if test="_parameter!=null or _parameter!=''"> 
+        and l.name like '%'||#{_parameter}||'%'
+        </if>
+    </select>
+    
+    <!-- 根据ID查找链接 -->
+    <select id="findLinkById" parameterType="long" resultMap="LinkDTOResultMap" >
+        select l.*,tt.id as termTaxonomyId,t.id as linkCategoryId,t.name as linkCategoryName 
+        from cms_link l,cms_term t, cms_term_taxonomy tt,cms_term_relationship tr 
+        where l.status='V' 
+        and tr.object_id = l.id 
+        and tr.term_taxonomy_id = tt.id 
+        and t.id=tt.TERM_ID 
+        and tt.taxonomy='lnk' 
+        and l.id=#{id,jdbcType=BIGINT}
+    </select>
+    
+    <!-- 分页获取所有链接 -->
+    <select id="searchLink" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="LinkDTOResultMap" >
+        select l.*,tt.id as termTaxonomyId,t.id as linkCategoryId,t.name as linkCategoryName 
+        from cms_link l,cms_term t, cms_term_taxonomy tt,cms_term_relationship tr 
+        where l.status='V' 
+        and tr.object_id = l.id 
+        and tr.term_taxonomy_id = tt.id 
+        and t.id=tt.TERM_ID 
+        and tt.taxonomy='lnk' 
+        ${whereSqlString} 
+        <if test="orderBy != null">
+            ${orderBySqlString}
+        </if>
+    </select>
+    
+    <!-- 根据条件查找链接条数 -->
+    <select id="countLink" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="long" >
+        select count(1) 
+        from cms_link l,cms_term t, cms_term_taxonomy tt,cms_term_relationship tr 
+        where l.status='V' 
+        and tr.object_id = l.id 
+        and tr.term_taxonomy_id = tt.id 
+        and t.id=tt.TERM_ID 
+        and tt.taxonomy='lnk' 
+        ${whereSqlString} 
+    </select>
+</mapper>

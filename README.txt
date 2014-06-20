@@ -1,4 +1,3 @@
-东方亿付clivia-admin项目
 目录结构说明
 
 参考 http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html

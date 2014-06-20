@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- CmsPostMetaMapper，内容的属性，对应表CMS_POST_META -->
+<mapper namespace="com.strawren.jpress.dao.CmsPostMetaMapper">
+    <!-- 返回结果集Map -->
+    <resultMap id="BaseResultMap" type="com.strawren.jpress.model.CmsPostMeta">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="POST_ID" jdbcType="BIGINT" property="postId" />
+        <result column="TERM_META_ID" jdbcType="BIGINT" property="termMetaId" />
+        <result column="KEY" jdbcType="VARCHAR" property="key" />
+        <result column="NAME" jdbcType="VARCHAR" property="name" />
+        <result column="VALUE" jdbcType="CLOB" property="value" />
+        <result column="SHOW_ORDER" jdbcType="BIGINT" property="showOrder" />
+        <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="CREATE_OPER_ID" jdbcType="BIGINT" property="createOperId" />
+        <result column="CREATE_OPER_NAME" jdbcType="VARCHAR" property="createOperName" />
+        <result column="LAST_UPD_TIME" jdbcType="TIMESTAMP" property="lastUpdTime" />
+        <result column="LAST_UPD_OPER_ID" jdbcType="BIGINT" property="lastUpdOperId" />
+        <result column="LAST_UPD_OPER_NAME" jdbcType="VARCHAR" property="lastUpdOperName" />
+    </resultMap>
+    
+    <!-- 保存数据 -->
+    <insert id="save" parameterType="com.strawren.jpress.model.CmsPostMeta">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+        SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into CMS_POST_META (
+            ID,
+            POST_ID,
+            TERM_META_ID,
+            KEY,
+            NAME,
+            VALUE,
+            SHOW_ORDER,
+            MISC_DESC,
+            STATUS,
+            CREATE_TIME,
+            CREATE_OPER_ID,
+            CREATE_OPER_NAME,
+            LAST_UPD_TIME,
+            LAST_UPD_OPER_ID,
+            LAST_UPD_OPER_NAME
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{postId,jdbcType=BIGINT},
+            #{termMetaId,jdbcType=BIGINT},
+            #{key,jdbcType=VARCHAR},
+            #{name,jdbcType=VARCHAR},
+            #{value,jdbcType=CLOB},
+            #{showOrder,jdbcType=BIGINT},
+            #{miscDesc,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{createOperId,jdbcType=BIGINT},
+            #{createOperName,jdbcType=VARCHAR},
+            #{lastUpdTime,jdbcType=TIMESTAMP},
+            #{lastUpdOperId,jdbcType=BIGINT},
+            #{lastUpdOperName,jdbcType=VARCHAR}
+        )
+    </insert>
+    
+      <!-- 根据主键取得数据 -->
+    <select id="get" parameterType="long" resultMap="BaseResultMap">
+        select * from CMS_POST_META where ID = #{id,jdbcType=BIGINT}
+    </select>
+  
+      <!-- 删除数据 -->
+    <delete id="delete" parameterType="long">
+        delete from CMS_POST_META where ID = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 更新数据 -->
+    <update id="update" parameterType="com.strawren.jpress.model.CmsPostMeta">
+        update CMS_POST_META
+        <set>
+            <if test="entityMap.postId != null">
+                POST_ID = #{entityMap.postId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.termMetaId != null">
+                TERM_META_ID = #{entityMap.termMetaId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.key != null">
+                KEY = #{entityMap.key,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.name != null">
+                NAME = #{entityMap.name,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.value != null">
+                VALUE = #{entityMap.value,jdbcType=CLOB},
+            </if>
+            <if test="entityMap.showOrder != null">
+                SHOW_ORDER = #{entityMap.showOrder,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.miscDesc != null">
+                MISC_DESC = #{entityMap.miscDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.status != null">
+                STATUS = #{entityMap.status,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.createTime != null">
+                CREATE_TIME = #{entityMap.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.createOperId != null">
+                CREATE_OPER_ID = #{entityMap.createOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.createOperName != null">
+                CREATE_OPER_NAME = #{entityMap.createOperName,jdbcType=VARCHAR},
+            </if>
+            <if test="entityMap.lastUpdTime != null">
+                LAST_UPD_TIME = #{entityMap.lastUpdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entityMap.lastUpdOperId != null">
+                LAST_UPD_OPER_ID = #{entityMap.lastUpdOperId,jdbcType=BIGINT},
+            </if>
+            <if test="entityMap.lastUpdOperName != null">
+                LAST_UPD_OPER_NAME = #{entityMap.lastUpdOperName,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据条件查找数据 -->
+    <select id="find" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="BaseResultMap">
+        SELECT * FROM CMS_POST_META WHERE 1=1 ${whereSqlString}
+        <if test="orderBy != null">
+            ${orderBySqlString}
+        </if>
+    </select>
+    
+    <!-- 根据条件查找数据条数 -->
+    <select id="count" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultType="long" >
+        SELECT COUNT(ID) FROM CMS_POST_META WHERE 1=1 ${whereSqlString} 
+    </select>
+    
+    <!-- 删除数据 -->
+    <delete id="delByTermMetaIdAndKey" parameterType="long">
+        delete from CMS_POST_META where POST_ID = #{postId}
+    </delete>
+    
+    <delete id="delPostImgMeta" parameterType="long">
+       delete from CMS_POST_META where POST_ID = #{postId} and KEY like '%sys_'
+    </delete>
+    
+    <select id="getMaxOerderNo" parameterType="long" resultType="long" >
+        select nvl(max(m.show_order),0) from CMS_POST_META m where m.post_id = #{postId} and m.status ='V'
+    </select>
+</mapper>
