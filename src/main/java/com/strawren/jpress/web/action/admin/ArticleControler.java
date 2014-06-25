@@ -231,12 +231,12 @@ public class ArticleControler extends BaseMultiActionController {
         for (CmsTermMeta termMeta : commMetaList) {
             List<PropertyFilter> commFilters = new ArrayList<PropertyFilter>();
             commFilters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "POST_ID", postId));
-            commFilters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "KEY", termMeta.getKey()));
+            commFilters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "KEY", termMeta.getJkey()));
             commFilters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "STATUS", JpressConstants.DICT_GLOBAL_STATUS_VALIDATE));
             List<CmsPostMeta> postMetaList = postMetaService.search(commFilters);
             if (postMetaList == null || postMetaList.size() <= 0) {
                 CmsPostMeta postMeta = new CmsPostMeta();
-                postMeta.setKey(termMeta.getKey());
+                postMeta.setJkey(termMeta.getJkey());
                 postMeta.setPostId(Long.valueOf(postId));
                 postMeta.setName(termMeta.getName());
                 postMeta.setTermMetaId(termMeta.getId());

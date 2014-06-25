@@ -8,7 +8,7 @@ The categories for both posts and links and the tags for posts are found within 
         <id column="ID" jdbcType="BIGINT" property="id" />
         <result column="NAME" jdbcType="VARCHAR" property="name" />
         <result column="SLUG" jdbcType="VARCHAR" property="slug" />
-        <result column="GROUP" jdbcType="BIGINT" property="group" />
+        <result column="JGROUP" jdbcType="VARCHAR" property="jgroup" />
         <result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName" />
         <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
         <result column="STATUS" jdbcType="VARCHAR" property="status" />
@@ -29,7 +29,7 @@ The categories for both posts and links and the tags for posts are found within 
             ID,
             NAME,
             SLUG,
-            "GROUP",
+            JGROUP,
             GROUP_NAME,
             MISC_DESC,
             STATUS,
@@ -43,7 +43,7 @@ The categories for both posts and links and the tags for posts are found within 
             #{id,jdbcType=BIGINT},
             #{name,jdbcType=VARCHAR},
             #{slug,jdbcType=VARCHAR},
-            #{group,jdbcType=BIGINT},
+            #{jgroup,jdbcType=VARCHAR},
             #{groupName,jdbcType=VARCHAR},
             #{miscDesc,jdbcType=VARCHAR},
             #{status,jdbcType=VARCHAR},
@@ -76,8 +76,8 @@ The categories for both posts and links and the tags for posts are found within 
             <if test="entityMap.slug != null">
                 SLUG = #{entityMap.slug,jdbcType=VARCHAR},
             </if>
-            <if test="entityMap.group != null">
-                "GROUP" = #{entityMap.group,jdbcType=BIGINT},
+            <if test="entityMap.jgroup != null">
+                "GROUP" = #{entityMap.jgroup,jdbcType=BIGINT},
             </if>
             <if test="entityMap.groupName != null">
                 GROUP_NAME = #{entityMap.groupName,jdbcType=VARCHAR},
@@ -128,7 +128,7 @@ The categories for both posts and links and the tags for posts are found within 
         <id column="ID" jdbcType="BIGINT" property="id" />
         <result column="NAME" jdbcType="VARCHAR" property="name" />
         <result column="SLUG" jdbcType="VARCHAR" property="slug" />
-        <result column="GROUP" jdbcType="BIGINT" property="group" />
+        <result column="JGROUP" jdbcType="VARCHAR" property="jgroup" />
         <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
         <result column="STATUS" jdbcType="VARCHAR" property="status" />
         <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
@@ -191,7 +191,7 @@ The categories for both posts and links and the tags for posts are found within 
         <result column="NAME" jdbcType="VARCHAR" property="name" />
         <result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName" />
         <result column="SLUG" jdbcType="VARCHAR" property="slug" />
-        <result column="GROUP" jdbcType="BIGINT" property="group" />
+        <result column="JGROUP" jdbcType="VARCHAR" property="jgroup" />
         <result column="TM_MISC" jdbcType="VARCHAR" property="tmmisc" />
         <result column="TM_STATUS" jdbcType="VARCHAR" property="tmstatus" />
         <result column="TY_ID" jdbcType="BIGINT" property="tyId" />
@@ -203,7 +203,7 @@ The categories for both posts and links and the tags for posts are found within 
     </resultMap>
     
     <select id="searchTermTaxonomy" parameterType="com.strawren.bsp.orm.query.BspCriterion" resultMap="TermResultMap" >
-        select* from(select tm.id as TERM_ID, tm.GROUP_NAME, tm.name,tm.slug, "GROUP",ty.id as TY_ID, ty.taxonomy,
+        select* from (select tm.id as TERM_ID, tm.GROUP_NAME, tm.name,tm.slug, JGROUP,ty.id as TY_ID, ty.taxonomy,
           tm.misc_desc as TM_MISC,tm.status as TM_STATUS,ty.parent_id, ty.post_count,ty.misc_desc as TY_MISC,
           ty.status TY_STATUS from cms_term tm, cms_term_taxonomy ty where tm.id = ty.term_id )
           where 1=1 and TM_STATUS='V' and TY_STATUS='V'
@@ -214,7 +214,7 @@ The categories for both posts and links and the tags for posts are found within 
     </select>
     
     <select id="getMaxOerderNo" parameterType="java.lang.String" resultType="long" >
-         select nvl(max(show_group),0) from (select "GROUP" as show_group from cms_term t, cms_term_taxonomy y 
+         select nvl(max(show_group),0) from (select JGROUP as show_group from cms_term t, cms_term_taxonomy y 
                 where t.id = y.term_id
                 and y.taxonomy = 'tag'
                 and t.status = 'V'

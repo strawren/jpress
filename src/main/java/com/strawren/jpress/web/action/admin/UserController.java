@@ -31,7 +31,9 @@ import com.strawren.bsp.orm.query.MatchType;
 import com.strawren.bsp.orm.query.Page;
 import com.strawren.bsp.orm.query.PropertyFilter;
 import com.strawren.bsp.orm.query.PropertyType;
+import com.strawren.bsp.util.DateTimeUtils;
 import com.strawren.bsp.util.Md5Utils;
+import com.strawren.bsp.util.PropertyFilterUtils;
 import com.strawren.bsp.web.action.BaseMultiActionController;
 import com.strawren.jpress.core.JpressConstants;
 import com.strawren.jpress.model.CmsOption;
@@ -49,7 +51,7 @@ import com.strawren.jpress.util.ModelInfoUtils;
  */
 @Controller
 @RequestMapping("${adminPath}/user")
-public class UserController extends BaseMultiActionController{
+public class UserController extends BaseMultiActionController {
     @Autowired
     CmsUserService cmsUserService;
 
@@ -65,26 +67,18 @@ public class UserController extends BaseMultiActionController{
      * @param response
      * @return
      */
-    @RequestMapping("/allUser.action")
-    public ModelAndView showAllUser(HttpServletRequest request, HttpServletResponse response, Page<CmsUser> page){
+    @RequestMapping("/list.action")
+    public ModelAndView list(HttpServletRequest request, HttpServletResponse response, Page<CmsUser> page) {
         log.debug("begin...");
 
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/cms/user/all");
-        String search = request.getParameter("search");  //搜索字段
-
-        List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
+        ModelAndView mv = new ModelAndView("/admin/user/list", "page", page);
+        
+        List<PropertyFilter> filters = PropertyFilterUtils.buildPropertyFilters(request);
         filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "STATUS", Constants.DICT_GLOBAL_STATUS_VALIDATE));
-        if(StringUtils.isNotBlank(search)){
-            filters.add(new PropertyFilter(MatchType.LIKE, PropertyType.S, "LOGIN_NAME", search));
-        }
-        page.setOrderField("LAST_UPD_TIME");
-        page.setOrderDirection(Page.DESC);
+        //默认每行四个
         page.setNumPerPage(4);
         page = cmsUserService.search(page, filters);
 
-        mv.addObject("page", page);
-        mv.addObject("search", search);
         log.debug("end!!!");
         return mv;
     }
@@ -95,26 +89,24 @@ public class UserController extends BaseMultiActionController{
      * @param response
      * @return
      */
-    @RequestMapping("/addUser.action")
-    public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response){
+    @RequestMapping("/edit.action")
+    public ModelAndView edit(HttpServletRequest request, HttpServletResponse response, CmsUser model) {
         log.debug("begin...");
 
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/cms/user/new");
-
-        List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
-        filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "CODE", JpressConstants.OPTIONS_KEY_SITE_USER_LEVEL));  //全局设置
-        filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "STATUS", Constants.DICT_GLOBAL_STATUS_VALIDATE));
-        List<CmsOption> optionsList = cmsOptionService.search(filters);
-
-        String userLevel = JpressConstants.USER_DEFAULT_LEVEL;
-        if(optionsList != null && optionsList.size() > 0){
-            userLevel = optionsList.get(0).getValue();
+        ModelAndView mv = new ModelAndView("/admin/user/edit");
+        
+        if(model == null || model.getId() < 1) {
+        	model = new CmsUser();
         }
-        mv.addObject("userLevel", userLevel);
+        else {
+			model = cmsUserService.get(model.getId());
+		}
 
+        putUserLevel2Mv(mv);
+        mv.addObject("model", model);
+        
         log.debug("end!!!");
-        return mv;
+		return mv;
     }
 
     /**
@@ -123,45 +115,110 @@ public class UserController extends BaseMultiActionController{
      * @param resp
      * @return
      */
-    @RequestMapping("/saveUser.action")
-    public ModelAndView saveUser(HttpServletRequest request, HttpServletResponse response){
+    @RequestMapping("/save.action")
+    public ModelAndView save(HttpServletRequest request, HttpServletResponse response, CmsUser model) {
         log.debug("begin...");
 
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/cms/user/new");
-
+        ModelAndView mv = new ModelAndView("/admin/user/edit", "model", model);
+        
         //必填参数检查
-        String loginName = request.getParameter("loginName");
-        String userEmail = request.getParameter("userEmail");
-        String loginPwd = request.getParameter("loginPwd");
-        log.info("loginName:" + loginName + ",userEmail:" + userEmail + ",loginPwd:***");
+        String loginName = model.getLoginName();
+        String userEmail = model.getUserEmail();
+        String loginPwd = model.getLoginPwd();
+        log.info("loginName:" + loginName + ", userEmail : " + userEmail + ", loginPwd : ***");
         if(StringUtils.isBlank(loginName) || StringUtils.isBlank(userEmail) || StringUtils.isBlank(loginPwd)){
             log.warn("params error!!!");
-            mv.addObject("msg", "参数错误");
+            mv.addObject("message", "参数错误");
+            putUserLevel2Mv(mv);
             return mv;
         }
-
-        CmsUser user = new CmsUser();
-        user.setLoginName(loginName);
-        user.setUserEmail(userEmail);
-        user.setUserName(request.getParameter("userName"));
-        user.setNickname(request.getParameter("nickName"));
-        user.setLoginPwd(Md5Utils.getMd5Code(loginPwd, "UTF-8", true));  //16位MD5加密
-        user.setStatus(Constants.DICT_GLOBAL_STATUS_VALIDATE);
-        ModelInfoUtils.createModelInfoBySys(user);
-        cmsUserService.save(user);
-
-        CmsUserMeta userMeta = new CmsUserMeta();
-        userMeta.setUserId(user.getId());
-        userMeta.setKey("userLevel");
-        userMeta.setValue(request.getParameter("userLevel"));
-        userMeta.setStatus(Constants.DICT_GLOBAL_STATUS_VALIDATE);
-        ModelInfoUtils.createModelInfoBySys(userMeta);
-        cmsUserMetaService.save(userMeta);
-
-        mv.setViewName("redirect:/cms/user/allUser.action");
+        
+        try {
+        	boolean createFlag = model.getId() > 0 ? false : true;
+        	//新建
+        	if (createFlag) {
+        		List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
+                //登录名重复
+                filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "LOGIN_NAME", loginName)); 
+                filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "STATUS", Constants.DICT_GLOBAL_STATUS_VALIDATE));
+                List<CmsUser> cmsUserList = cmsUserService.search(filters);
+                if(cmsUserList != null && cmsUserList.size() > 0){
+                    log.warn("reduplicated login name :" + loginName);
+                    mv.addObject("message", "登录名已经存在");
+                    putUserLevel2Mv(mv);
+                    return mv;
+                }
+                //邮箱重复
+                filters.clear();
+                filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "USER_EMAIL", userEmail)); 
+                filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "STATUS", Constants.DICT_GLOBAL_STATUS_VALIDATE));
+                cmsUserList = cmsUserService.search(filters);
+                if(cmsUserList != null && cmsUserList.size() > 0){
+                    log.warn("reduplicated user email :" + userEmail);
+                    mv.addObject("message", "邮箱已经存在");
+                    putUserLevel2Mv(mv);
+                    return mv;
+                }
+                
+                //处理密码
+                model.setLoginPwd(Md5Utils.getMd5Code(loginPwd, "UTF-8", true));  //16位MD5加密
+                model.setStatus(Constants.DICT_GLOBAL_STATUS_VALIDATE);
+                model.setUserStatus(Constants.DICT_GLOBAL_STATUS_VALIDATE);
+                model.setRegisterDate(DateTimeUtils.getCurrentDate());
+                model.setSerialKey("NA");
+                
+                ModelInfoUtils.createModelInfoBySys(model);
+                cmsUserService.save(model);
+                
+                CmsUserMeta userMeta = new CmsUserMeta();
+                userMeta.setUserId(model.getId());
+                userMeta.setJkey("userLevel");
+                userMeta.setValue(request.getParameter("userLevel"));
+                userMeta.setStatus(Constants.DICT_GLOBAL_STATUS_VALIDATE);
+                ModelInfoUtils.createModelInfoBySys(userMeta);
+                cmsUserMetaService.save(userMeta);
+        	}
+        	//更新
+        	else {
+        		if (StringUtils.isNotBlank(loginPwd)) {
+                    model.setLoginPwd(Md5Utils.getMd5Code(loginPwd, "UTF-8", true));
+                }
+        		//登录名不能
+        		List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
+                filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "LOGIN_NAME", loginName)); 
+                filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "STATUS", Constants.DICT_GLOBAL_STATUS_VALIDATE));
+                List<CmsUser> cmsUserList = cmsUserService.search(filters);
+                if(cmsUserList != null && cmsUserList.size() == 0){
+                    log.warn("login name cannot modify :" + loginName);
+                    mv.addObject("message", "登录名不能修改");
+                    putUserLevel2Mv(mv);
+                    return mv;
+                }
+                //邮箱重复
+                filters.clear();
+                filters.add(new PropertyFilter(MatchType.NEQ, PropertyType.L, "ID", String.valueOf(model.getId()))); 
+                filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "USER_EMAIL", userEmail)); 
+                filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "STATUS", Constants.DICT_GLOBAL_STATUS_VALIDATE));
+                cmsUserList = cmsUserService.search(filters);
+                if(cmsUserList != null && cmsUserList.size() > 0){
+                    log.warn("reduplicated user email :" + userEmail);
+                    mv.addObject("message", "邮箱已经存在");
+                    putUserLevel2Mv(mv);
+                    return mv;
+                }
+                
+                // 修改
+                ModelInfoUtils.updateModelInfoBySys(model);
+                cmsUserService.update(model);
+        	}
+        }
+        catch(Exception e) {
+        	log.info(e.getMessage(), e);
+        	wrapModelAndView(mv, e);
+        }
+        
         log.debug("end!!!");
-        return mv;
+        return list(request, response, new Page<CmsUser>());
     }
 
     /**
@@ -170,18 +227,13 @@ public class UserController extends BaseMultiActionController{
      * @param resp
      * @return
      */
-    @RequestMapping("/showUserInfo.action")
-    public ModelAndView showUserInfo(HttpServletRequest req, HttpServletResponse resp){
+    @RequestMapping("/view.action")
+    public ModelAndView view(HttpServletRequest request, HttpServletResponse response, CmsUser model) {
         log.debug("begin...");
 
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/cms/user/show");
-
-        CmsUser user = cmsUserService.get(ModelInfoUtils.getCurUserId());
-        mv.addObject("cmsUser", user);
-
+        model = cmsUserService.get(model.getId());
         log.debug("end!!!");
-        return mv;
+        return new ModelAndView("/admin/user/view", "model", model);
     }
 
     /**
@@ -190,73 +242,43 @@ public class UserController extends BaseMultiActionController{
      * @param resp
      * @return
      */
-    @RequestMapping("/modifyPwd.action")
-    public ModelAndView modifyPwd(HttpServletRequest req, HttpServletResponse resp){
+    @RequestMapping("/pwd.action")
+    public ModelAndView pwd(HttpServletRequest request, HttpServletResponse response, CmsUser model) {
         log.debug("begin...");
 
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/cms/user/pwdModify");
+        ModelAndView mv = new ModelAndView("/admin/user/pwd");
 
-        log.debug("end!!!");
-        return mv;
-    }
-
-    /**
-     * 跳转到修改用户信息页面显示
-     * @param req
-     * @param resp
-     * @return
-     */
-    @RequestMapping("/updateShowUser.action")
-    public ModelAndView updateShowUser(HttpServletRequest req, HttpServletResponse resp){
-        log.debug("begin...");
-
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/cms/user/update");
-
-        String uid = req.getParameter("uid");
-        if (StringUtils.isNotBlank(uid)) {
-            CmsUser user = cmsUserService.get(new Long(uid));
-            mv.addObject("cmsUser",user);
+        String oldPwd = model.getLoginPwd();
+        String newPwd = request.getParameter("newPwd");
+        
+        if(StringUtils.isBlank(oldPwd) || StringUtils.isBlank(newPwd)) {
+        	log.warn("old pwd or new pwd is null for [" + model.getId() + "]");
+            mv.addObject("message", "新密码或者旧密码为空!");
+            return mv;
         }
-
-
-        log.debug("end!!!");
-        return mv;
-    }
-
-    /**
-     * 修改用户信息
-     * @param req
-     * @param resp
-     * @return
-     */
-    @RequestMapping("/updateUser.action")
-    public ModelAndView updateUser(HttpServletRequest req, HttpServletResponse resp) {
-        log.debug("begin...");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("redirect:/cms/user/allUser.action");
-
-        String email = req.getParameter("userEmail");
-        String name = req.getParameter("userName");
-        String nickName = req.getParameter("nickName");
-        String pwd = req.getParameter("loginPwd");
-        String uid = req.getParameter("uid");
-
-        if (StringUtils.isNotBlank(uid)) {
-            CmsUser user = cmsUserService.get(new Long(uid));
-            user.setNickname(nickName);
-            user.setUserEmail(email);
-
-            if (StringUtils.isNotBlank(pwd)) {
-                user.setLoginPwd(Md5Utils.getMd5Code(pwd, "UTF-8", true));
-            }
-            user.setUserName(name);
-            // 修改
-            ModelInfoUtils.updateModelInfoBySys(user);
-            cmsUserService.update(user);
+        
+        if(model.getId() < 1) {
+        	log.warn("user don't exist");
+            mv.addObject("message", "用户不存在!");
+            return mv;
         }
-
+        model = cmsUserService.get(model.getId());
+        if(model == null) {
+        	log.warn("user don't exist");
+            mv.addObject("message", "用户不存在!");
+            return mv;
+        }
+        if(!Md5Utils.getMd5Code(oldPwd, "UTF-8", true).equals(model.getLoginPwd())) {
+        	log.warn("user's old pwd is incorrect for [" + model.getId() + "]");
+            mv.addObject("message", "原密码不正确 !");
+            return mv;
+        }
+        
+        model.setLoginPwd(Md5Utils.getMd5Code(newPwd, "UTF-8", true)); 
+        ModelInfoUtils.updateModelInfoBySys(model);
+        cmsUserService.update(model);
+        mv.addObject("message", "修改密码成功!");
+        
         log.debug("end!!!");
         return mv;
     }
@@ -267,37 +289,43 @@ public class UserController extends BaseMultiActionController{
      * @param resp
      * @return
      */
-    @RequestMapping("/deleteUser.action")
-    public ModelAndView deleteUser(HttpServletRequest req, HttpServletResponse resp) {
+    @RequestMapping("/del.action")
+    public ModelAndView del(HttpServletRequest request, HttpServletResponse response) {
         log.debug("begin...");
 
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("redirect:/cms/user/allUser.action");
-
-        String[] ids = req.getParameterValues("checkItem");
-        String userId = req.getParameter("uid");
-
-        if (StringUtils.isNotBlank(userId)) {
-            CmsUser cmsUser = cmsUserService.get(new Long(userId));
-            // 逻辑删除
-            cmsUser.setStatus(Constants.DICT_GLOBAL_STATUS_INVALIDATE);
-            cmsUserService.update(cmsUser);
+        String id = getModelId(request);
+		String [] ids = request.getParameterValues("ids");
+		log.debug("id->" + id + ", and ids ->" + ids);
+		
+        if (StringUtils.isNotBlank(id)) {
+            CmsUser model = cmsUserService.get(new Long(id));
+            model.setStatus(Constants.DICT_GLOBAL_STATUS_INVALIDATE);
+            ModelInfoUtils.updateModelInfoBySys(model);
+            cmsUserService.update(model);
         }
-
-        // 批量删除
         if(ids != null && ids.length > 0) {
             for (String uid : ids) {
-                CmsUser cmsUser = cmsUserService.get(new Long(uid));
-                cmsUser.setStatus(Constants.DICT_GLOBAL_STATUS_INVALIDATE);
-                cmsUserService.update(cmsUser);
+            	CmsUser model = cmsUserService.get(new Long(uid));
+                model.setStatus(Constants.DICT_GLOBAL_STATUS_INVALIDATE);
+                ModelInfoUtils.updateModelInfoBySys(model);
+                cmsUserService.update(model);
             }
         }
+        
         log.debug("end!!!");
-        return mv;
+        return list(request, response, new Page<CmsUser>());
     }
 
-
-
-
-
+    protected void putUserLevel2Mv(ModelAndView mv) {
+    	List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
+        //全局设置
+        filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "CODE", JpressConstants.OPTIONS_KEY_SITE_USER_LEVEL)); 
+        filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "STATUS", Constants.DICT_GLOBAL_STATUS_VALIDATE));
+        List<CmsOption> optionsList = cmsOptionService.search(filters);
+        String userLevel = JpressConstants.USER_DEFAULT_LEVEL;
+        if(optionsList != null && optionsList.size() > 0){
+            userLevel = optionsList.get(0).getValue();
+        }
+        mv.addObject("userLevel", userLevel);
+    }
 }

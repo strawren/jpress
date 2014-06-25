@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
-    	var curMenu = "${param.menu}";
+    	var curMenu = "${menu}";
     	if(curMenu == null || curMenu == '') {
     		curMenu = "menu_home";
     	}
@@ -16,7 +16,7 @@
 			moduleNameSpanText="仪表盘";
 			break;
 		case "menu_content":
-            moduleNameSpanText="商品管理";
+            moduleNameSpanText="文章管理";
             break;
 		case "menu_multimedia":
             moduleNameSpanText="图片管理";
@@ -52,8 +52,8 @@
                     <!--side bar-->
                     <aside class="side-left">
                         <ul class="sidebar">
-                            <li id="menu_home" > <!--always define class .first for first-child of li element sidebar left-->
-                                <a href="${ctxAdmin}/index.action" title="仪表盘">
+                            <li id="menu_home" >
+                                <a href="${ctxAdmin}/index.action?menu=menu_home" title="仪表盘">
                                     <div class="helper-font-24">
                                         <i class="icofont-dashboard"></i>
                                     </div>
@@ -66,37 +66,37 @@
                                     <div class="helper-font-24">
                                         <i class="icofont-edit"></i>
                                     </div>
-                                    <span class="sidebar-text">商品</span>
+                                    <span class="sidebar-text">文章</span>
                                 </a>
                                 <ul class="sub-sidebar-form corner-top shadow-white">
                                     <li>
                                         <a href="${ctx }/cms/article/list.action?menu=menu_content&postStatus=all" title="所有内容" class="corner-all">
                                             <i class="icofont-file"></i>
-                                            <span class="sidebar-text">所有商品</span>
+                                            <span class="sidebar-text">所有文章</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="${ctx }/cms/article/add_show.action?menu=menu_content" title="新写内容" class="corner-all">
                                             <i class="icofont-book"></i>
-                                            <span class="sidebar-text">新增商品</span>
+                                            <span class="sidebar-text">新增文章</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="${ctxAdmin}/taxonomy/taxonomy_index.action?menu=menu_content" title="分类目录" class="corner-all">
                                             <i class="icon-folder-open"></i>
-                                            <span class="sidebar-text">商品分类管理</span>
+                                            <span class="sidebar-text">文章分类管理</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="${ctx }/cms/tag/tag_index.action?menu=menu_content" title="标签" class="corner-all">
                                             <i class="icon-tags"></i>
-                                            <span class="sidebar-text">商品标签管理</span>
+                                            <span class="sidebar-text">文章标签管理</span>
                                         </a>
                                     </li>
                                      <li>
                                         <a href="${ctx }/cms/taxonomy/sys_term_add.action?menu=menu_content" title="属性" class="corner-all">
                                             <i class=" icon-tasks"></i>
-                                            <span class="sidebar-text">公用属性管理</span>
+                                            <span class="sidebar-text">文章属性管理</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -224,7 +224,7 @@
                             </li>
                             
                             <li id="menu_user">
-                                <a href="${ctxAdmin}/user/allUser.action?menu=menu_user" title="用户">
+                                <a href="${ctxAdmin}/user/list.action?menu=menu_user" title="用户">
                                     <div class="helper-font-24">
                                         <i class="icofont-user"></i>
                                     </div>
@@ -232,29 +232,29 @@
                                 </a>
                                 <ul class="sub-sidebar-form corner-top shadow-silver-dark">
                                 	<li>
-                                        <a href="${ctxAdmin}/user/allUser.action?menu=menu_user" title="所有用户">
+                                        <a href="${ctxAdmin}/user/list.action?menu=menu_user" title="所有用户">
                                             <i class="icofont-list-alt"></i>
                                             <span class="sidebar-text">所有用户</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="${ctxAdmin}/user/addUser.action?menu=menu_user" title="添加用户">
+                                        <a href="${ctxAdmin}/user/edit.action?menu=menu_user" title="添加用户">
                                             <i class="icofont-plus-sign"></i>
                                             <span class="sidebar-text">添加用户</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="${ctxAdmin}/user/showUserInfo.action?menu=menu_user" title="我的资料">
+                                        <a href="${ctxAdmin}/user/view.action?menu=menu_user&id=${user.id}" title="我的资料">
                                             <i class="icofont-user-md"></i>
                                             <span class="sidebar-text">我的资料</span>
                                         </a>
                                     </li>
-<!--                                     <li> -->
-<%--                                         <a href="${ctxAdmin}/user/modifyPwd.action?menu=menu_user" title="密码修改"> --%>
-<!--                                             <i class="icofont-paste"></i> -->
-<!--                                             <span class="sidebar-text">密码修改</span> -->
-<!--                                         </a> -->
-<!--                                     </li> -->
+	                                <li>
+                                        <a href="${ctxAdmin}/user/pwd.action?menu=menu_user" title="密码修改">
+                                            <i class="icofont-paste"></i>
+                                            <span class="sidebar-text">密码修改</span>
+                                         </a>
+                                     </li>
                                 </ul>
                             </li>
                             

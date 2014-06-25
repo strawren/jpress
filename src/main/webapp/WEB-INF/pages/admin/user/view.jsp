@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="zh">
     <head>
-        <title>东方亿付电视商务系统--用户管理模块--用户资料</title>
+        <title>${appName }--用户--我的资料</title>
         <jsp:include page="/common/meta.jsp"></jsp:include>
         <!-- styles -->
         <!-- 
@@ -65,7 +65,7 @@
             <div class="row-fluid">
                 <!-- span side-left -->
                 <div class="span1">
-                    <jsp:include page="/common/cms/sidebar.jsp"></jsp:include>
+                    <jsp:include page="/common/sidebar.jsp"></jsp:include>
                 </div><!-- span side-left -->
                 
                 <!-- span content -->
@@ -74,42 +74,44 @@
                     <div class="content">
                         <!-- content-header -->
                         <div class="content-header">
-                            <h2><i class="icofont-retweet"></i> 用户  <small>电视商务商户管理系统 &rsaquo; 用户管理模块&rsaquo; 我的资料</small></h2>
-                        </div><!-- /content-header -->
+                            <h2><i class="icofont-retweet"></i> 用户  <small>${appName } &rsaquo; 用户&rsaquo; 我的资料</small></h2>
+                        </div>
                         
                         <!-- content-body -->
                         <div class="content-body">
-                            
                             <!-- tab resume content -->
                             <div class="alert alert-error" <c:if test="${empty msg}">style="display: none;"</c:if> id="formMsg">
-                            ${msg}
+                            ${message}
                             </div>
-                            <div class="row-fluid">
                             
+                            <div class="row-fluid">
                                 <div class="span9">
                                     <div class="box corner-all">
                                         <div class="box-header corner-top grd-white">
-                                            <span><i class="icon-folder-open"></i>&nbsp;用户资料</span>
+                                            <span><i class="icon-folder-open"></i>&nbsp;我的资料</span>
                                         </div>
                                         <div class="box-body">
                                             <div class="page-header">
 			                                    <div class="pull-right">
 			                                        <img data-src="holder.js/100x100/text:best regard" class="img-circle" />
 			                                    </div>
-			                                    <h3>${cmsUser.loginName}&nbsp;<small>${cmsUser.miscDesc}</small></h3>
+			                                    <h3>${model.loginName}&nbsp;<small>${model.miscDesc}</small></h3>
 			                                </div>
 			                                <div class="row-fluid">
 			                                    <div class="span2"></div>
 			                                    <div class="span4">
-                                                    <p>姓名</p>
-                                                    <p>昵称</p>
-                                                    <p>电子邮件</p>
-			                                        
+                                                    <p>姓名：</p>
+                                                    <p>昵称：</p>
+                                                    <p>显示名称：</p>
+                                                    <p>电子邮件：</p>
+			                                        <p>注册时间：</p>
 			                                    </div>
 			                                    <div class="span4">
-                                                    <p>${cmsUser.userName }</p>
-                                                    <p>${cmsUser.nickname }</p>
-                                                    <p>${cmsUser.userEmail }</p>
+                                                    <p>${model.userName }</p>
+                                                    <p>${model.nickname }</p>
+                                                    <p>${model.showName }</p>
+                                                    <p>${model.userEmail }</p>
+                                                    <p><fmt:formatDate value="${model.registerDate }" pattern="yyyy-MM-dd HH:mm:ss"/></p>
 			                                    </div>
 			                                </div>
                                         </div>
@@ -122,22 +124,17 @@
                                             <span>修改资料</span>
                                         </div>
                                         <div class="box-body">
-                                              <div class="control-group">
-                                                  <i class="icon-refresh"></i><span>信息变更，需要修改？</span><br>
-                                              </div>
-                                              <div class="control-group">
-                                                  <a></a><a class="btn tbn-small btn-info" id="editUserBtn" href="${ctx}/cms/user/updateShowUser.html?menu=menu_user&uid=${user.id }">编辑</a>
-                                              </div>
-                                    </div>
-                                </div>
+	                                        <div class="control-group">
+	                                            <i class="icon-refresh"></i><span>信息变更，需要修改？</span><br>
+	                                        </div>
+	                                        <div class="control-group">
+	                                            <a></a><a class="btn tbn-small btn-info" id="editUserBtn" href="${ctxAdmin}/user/edit.action?id=${user.id }">编辑</a>
+	                                        </div>
+                                    	</div>
+                                	</div>
+                              	</div>
                                 
-                              </div>
-                              <!-- tab resume update -->
-                                
-                                
-                            </div><!-- tab stat -->
-                            
-                            <!--/dashboar-->
+                            </div>
                         </div>
                         <!--/content-body -->
                     </div><!-- /span content -->

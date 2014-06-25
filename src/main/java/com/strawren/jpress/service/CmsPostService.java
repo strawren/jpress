@@ -186,8 +186,7 @@ public class CmsPostService extends DefaultEntityService<CmsPost, Long>{
         if(StringUtils.isNotBlank(imgPath)){
             CmsPostMeta imgMeta = new CmsPostMeta();
             imgMeta.setPostId(post.getId());
-            imgMeta.setKey(JpressConstants.SYS_POST_IMAGE_PATH_KEY);
-//            imgMeta.setKey(CliviaConstants.KEY_PRCTURE_FEATURE_PERFIX + post.getId() + "_" + imgPostId);
+            imgMeta.setJkey(JpressConstants.SYS_POST_IMAGE_PATH_KEY);
             imgMeta.setName(JpressConstants.PRCTURE_FEATURE_TEXT);
             imgMeta.setStatus(JpressConstants.DICT_GLOBAL_STATUS_VALIDATE);
             imgMeta.setValue(imgPath);
@@ -290,7 +289,7 @@ public class CmsPostService extends DefaultEntityService<CmsPost, Long>{
               CmsPostMeta imgMeta = new CmsPostMeta();
               imgMeta.setPostId(post.getId());
 //              imgMeta.setKey(CliviaConstants.KEY_PRCTURE_FEATURE_PERFIX + post.getId() + "_" + imgPostId);
-              imgMeta.setKey(JpressConstants.SYS_POST_IMAGE_PATH_KEY);
+              imgMeta.setJkey(JpressConstants.SYS_POST_IMAGE_PATH_KEY);
               imgMeta.setName(JpressConstants.PRCTURE_FEATURE_TEXT);
               imgMeta.setValue(imgPath);
               imgMeta.setStatus(JpressConstants.DICT_GLOBAL_STATUS_VALIDATE);
@@ -495,13 +494,13 @@ public class CmsPostService extends DefaultEntityService<CmsPost, Long>{
         //分类属性保存
         for (CmsTermMeta cmsTermMeta : termMetaList) {
             maxOrderNo += 1;
-            String postValue = request.getParameter(cmsTermMeta.getKey() + "_" + cmsTermMeta.getId());
+            String postValue = request.getParameter(cmsTermMeta.getJkey() + "_" + cmsTermMeta.getId());
             log.debug("postValue is > > " + postValue);
             CmsPostMeta postMeta = new CmsPostMeta();
             postMeta.setPostId(postId);
             postMeta.setTermMetaId(cmsTermMeta.getId());
             postMeta.setName(cmsTermMeta.getName());
-            postMeta.setKey(cmsTermMeta.getKey());
+            postMeta.setJkey(cmsTermMeta.getJkey());
             postMeta.setValue(postValue);
             postMeta.setShowOrder(Integer.valueOf(maxOrderNo.toString()));
             postMeta.setStatus(JpressConstants.DICT_GLOBAL_STATUS_VALIDATE);

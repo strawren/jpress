@@ -46,6 +46,8 @@ public class IndexController extends BaseMultiActionController {
     @Autowired
     CmsPostService postService;
 
+    RandomValidateCode randomValidateCode = new RandomValidateCode();
+    
     /**
      * 跳转到仪表盘页面
      * @param request
@@ -115,9 +117,8 @@ public class IndexController extends BaseMultiActionController {
     @RequestMapping("/login.action")
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
         log.debug("begin...");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/admin/login");
-
+        
+        ModelAndView mv = new ModelAndView("/admin/login");
         if(StringUtils.isBlank(request.getParameter("loginFlag"))){
             return mv;
         }
@@ -178,7 +179,7 @@ public class IndexController extends BaseMultiActionController {
         }
 
         log.debug("end!!!");
-        return new ModelAndView("redirect:" + adminPath + "/index.action");
+        return index(request, response);
     }
 
     /**
@@ -196,7 +197,8 @@ public class IndexController extends BaseMultiActionController {
 
         log.debug("user: " + currentUser.getPrincipal() + " logout success!!!");
         log.debug("end!!!");
-        return new ModelAndView("redirect:" + adminPath + "/login.action");
+        
+        return new ModelAndView("/admin/login");
     }
 
     /**
@@ -206,14 +208,14 @@ public class IndexController extends BaseMultiActionController {
      * @return
      */
     @RequestMapping("/random.action")
-    public ModelAndView random(HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView random(HttpServletRequest request, HttpServletResponse response) {
         log.debug("begin...");
 
         response.setContentType("image/jpeg");				//设置相应类型,告诉浏览器输出的内容为图片
         response.setHeader("Pragma", "No-cache");			//设置响应头信息，告诉浏览器不要缓存此内容
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expire", 0);
-        RandomValidateCode randomValidateCode = new RandomValidateCode();
+        
         try {
             randomValidateCode.getRandcode(request, response);//输出图片方法
         } 

@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="com.strawren.jpress.model.CmsCommentMeta">
         <id column="ID" jdbcType="BIGINT" property="id" />
         <result column="COMMENT_ID" jdbcType="BIGINT" property="commentId" />
-        <result column="KEY" jdbcType="VARCHAR" property="key" />
+        <result column="JKEY" jdbcType="VARCHAR" property="jkey" />
         <result column="VALUE" jdbcType="CLOB" property="value" />
         <result column="MISC_DESC" jdbcType="VARCHAR" property="miscDesc" />
         <result column="STATUS" jdbcType="VARCHAR" property="status" />
@@ -26,7 +26,7 @@
         insert into CMS_COMMENT_META (
             ID,
             COMMENT_ID,
-            KEY,
+            JKEY,
             VALUE,
             MISC_DESC,
             STATUS,
@@ -39,7 +39,7 @@
         ) values (
             #{id,jdbcType=BIGINT},
             #{commentId,jdbcType=BIGINT},
-            #{key,jdbcType=VARCHAR},
+            #{jkey,jdbcType=VARCHAR},
             #{value,jdbcType=CLOB},
             #{miscDesc,jdbcType=VARCHAR},
             #{status,jdbcType=VARCHAR},
@@ -69,8 +69,8 @@
             <if test="entityMap.commentId != null">
                 COMMENT_ID = #{entityMap.commentId,jdbcType=BIGINT},
             </if>
-            <if test="entityMap.key != null">
-                KEY = #{entityMap.key,jdbcType=VARCHAR},
+            <if test="entityMap.jkey != null">
+                JKEY = #{entityMap.jkey,jdbcType=VARCHAR},
             </if>
             <if test="entityMap.value != null">
                 VALUE = #{entityMap.value,jdbcType=CLOB},

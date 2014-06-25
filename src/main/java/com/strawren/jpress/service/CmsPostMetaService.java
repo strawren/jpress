@@ -76,7 +76,7 @@ public class CmsPostMetaService extends DefaultEntityService<CmsPostMeta, Long>{
         Map<String, CmsPostMeta>  metaMap = new HashMap<String, CmsPostMeta>();
 
         for (CmsPostMeta cmsPostMeta : metas) {
-            metaMap.put(cmsPostMeta.getKey(), cmsPostMeta);
+            metaMap.put(cmsPostMeta.getJkey(), cmsPostMeta);
         }
 
         return metaMap;

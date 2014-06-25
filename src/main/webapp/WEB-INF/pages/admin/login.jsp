@@ -152,7 +152,7 @@
 			<span>|</span>
 			<a href="http://bbs.jpress.cn" target="_blank">jpress社区心</a>
 			<span>|</span>
-			<a href="http://me.alipay.com/strawren" target="_blank">友情赞助</a>
+			<a href="http://me.alipay.com/strawren" target="_blank"><img alt="友情赞助" src="${rootPath }/images/alipay/strawren.png" />友情赞助</a>
 			<span>|</span>
 			<a href="#">qq群325541893</a>
 			<br/>

@@ -7,7 +7,7 @@
         <id column="ID" jdbcType="BIGINT" property="id" />
         <result column="POST_ID" jdbcType="BIGINT" property="postId" />
         <result column="TERM_META_ID" jdbcType="BIGINT" property="termMetaId" />
-        <result column="KEY" jdbcType="VARCHAR" property="key" />
+        <result column="JKEY" jdbcType="VARCHAR" property="jkey" />
         <result column="NAME" jdbcType="VARCHAR" property="name" />
         <result column="VALUE" jdbcType="CLOB" property="value" />
         <result column="SHOW_ORDER" jdbcType="BIGINT" property="showOrder" />
@@ -30,7 +30,7 @@
             ID,
             POST_ID,
             TERM_META_ID,
-            KEY,
+            JKEY,
             NAME,
             VALUE,
             SHOW_ORDER,
@@ -46,7 +46,7 @@
             #{id,jdbcType=BIGINT},
             #{postId,jdbcType=BIGINT},
             #{termMetaId,jdbcType=BIGINT},
-            #{key,jdbcType=VARCHAR},
+            #{jkey,jdbcType=VARCHAR},
             #{name,jdbcType=VARCHAR},
             #{value,jdbcType=CLOB},
             #{showOrder,jdbcType=BIGINT},
@@ -81,8 +81,8 @@
             <if test="entityMap.termMetaId != null">
                 TERM_META_ID = #{entityMap.termMetaId,jdbcType=BIGINT},
             </if>
-            <if test="entityMap.key != null">
-                KEY = #{entityMap.key,jdbcType=VARCHAR},
+            <if test="entityMap.jkey != null">
+                JKEY = #{entityMap.jkey,jdbcType=VARCHAR},
             </if>
             <if test="entityMap.name != null">
                 NAME = #{entityMap.name,jdbcType=VARCHAR},

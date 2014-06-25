@@ -193,7 +193,7 @@ public class TagController extends BaseMultiActionController{
         ModelAndView mv= new ModelAndView("forward:/cms/tag/tag_index.action?menu=menu_content");
         String ImgPostId = request.getParameter("postId");
         Long maxOrderNo = termService.getMaxOerderNo(JpressConstants.MENU_PONIT_TYPE_TAG);
-        tag.setGroup(maxOrderNo + 1);
+        tag.setJgroup("" + (maxOrderNo + 1));
         ModelInfoUtils.updateModelInfoBySys(tag);
         List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
         filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "STATUS", JpressConstants.DICT_GLOBAL_STATUS_VALIDATE));

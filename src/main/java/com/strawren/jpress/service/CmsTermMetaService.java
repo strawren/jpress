@@ -80,7 +80,7 @@ public class CmsTermMetaService extends DefaultEntityService<CmsTermMeta, Long>{
                 List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
                 filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "STATUS", JpressConstants.DICT_GLOBAL_STATUS_VALIDATE));
                 filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "TERM_META_ID", termMeta.getId().toString()));
-                filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "KEY", termMeta.getKey()));
+                filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "KEY", termMeta.getJkey()));
                 List<CmsPostMeta> postMetaList = postMetaService.search(filters);
                 if(postMetaList != null && postMetaList.size() > 0){
                     CmsPostMeta postMeta = postMetaService.search(filters).get(0);

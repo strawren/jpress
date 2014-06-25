@@ -24,11 +24,11 @@ import com.strawren.bsp.core.Model;
 public class CmsUserMeta extends Model {
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private long id;
 
     private Long userId;
 
-    private String key;
+    private String jkey;
 
     private String value;
 
@@ -49,16 +49,16 @@ public class CmsUserMeta extends Model {
 
     private String lastUpdOperName;
 
-    public Long getId(){
+    public long getId(){
         return id;
     }
 
-    public void setId(Long id){
+    public void setId(long id){
 	entityMap.put("id", id);
         this.id = id;
     }
 
-    public Long getUserId(){
+    public long getUserId(){
         return userId;
     }
 
@@ -68,12 +68,12 @@ public class CmsUserMeta extends Model {
     }
 
     public String getKey(){
-        return key;
+        return jkey;
     }
 
-    public void setKey(String key){
-	entityMap.put("key", key);
-        this.key = key;
+    public void setJkey(String jkey){
+	entityMap.put("jkey", jkey);
+        this.jkey = jkey;
     }
 
     public String getValue(){

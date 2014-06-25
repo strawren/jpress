@@ -1,7 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"
-%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp"%>
+
 <div class="row-fluid">
     <div class="span6">
         <div class="dataTables_info" id="datatablestools_info">共<span id="totalPagesSpan">0</span>页,<span id="totalCountSpan">0</span>条记录,每页<span id="numPerPageSpan">10</span>条,当前第<span id="currentPageSpan">0</span>页</div>

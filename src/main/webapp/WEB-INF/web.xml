@@ -41,6 +41,16 @@
     </filter-mapping>
      -->
      
+     <!-- 菜单拦截 -->
+     <filter>
+        <filter-name>menuInterceptFilter</filter-name>
+        <filter-class>com.strawren.jpress.web.filter.admin.MenuInterceptFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>menuInterceptFilter</filter-name>
+        <url-pattern>*.action</url-pattern>
+    </filter-mapping>
+    
      <filter>
     	<filter-name>shiroFilter</filter-name>
     	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>

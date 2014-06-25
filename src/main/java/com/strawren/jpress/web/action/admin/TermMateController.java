@@ -231,7 +231,7 @@ public class TermMateController extends BaseMultiActionController{
         List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
         filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "STATUS", JpressConstants.DICT_GLOBAL_STATUS_VALIDATE));
         filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "TERM_META_ID", termMeta.getId().toString()));
-        filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "KEY", termMeta.getKey()));
+        filters.add(new PropertyFilter(MatchType.EQ, PropertyType.S, "KEY", termMeta.getJkey()));
         postMatList = postMetaService.search(filters);
         return postMatList.size() == 0 || postMatList == null ? null : postMatList.get(0) ;
 

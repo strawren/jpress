@@ -85,47 +85,6 @@ public class BaseMultiActionController extends MultiActionController {
         return getMessageSourceAccessor().getMessage(msgKey, args, locale);
     }
 
-   /* @Override
-    protected void bind(HttpServletRequest request, Object command) throws Exception {
-        logger.debug("Binding request parameters onto MultiActionController command");
-        setValidator();
-        ServletRequestDataBinder binder = createBinder(request, command);
-        BindException errors = new BindException(binder.getBindingResult());
-        binder.bind(request);
-        if (this.getValidators() != null) {
-            for (int i = 0; i < this.getValidators().length; i++) {
-                if (this.getValidators()[i].supports(command.getClass())) {
-                    ValidationUtils.invokeValidator(this.getValidators()[i],command, errors);
-                }
-            }
-        }
-        request.setAttribute(ERRORS_NAME, errors);
-    }
-
-    @Override
-    protected ServletRequestDataBinder createBinder(HttpServletRequest request,Object command) throws Exception {
-        String commandName = command.getClass().getSimpleName();
-        commandName = commandName.substring(0,1).toLowerCase()+commandName.substring(1);
-        ServletRequestDataBinder binder = new ServletRequestDataBinder(command,commandName);
-        initBinder(request, binder);
-        return binder;   
-    }*/
-
-    /*@Override
-    @InitBinder
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
-        log.debug("initBinder(HttpServletRequest request, ServletRequestDataBinder binder) begin ...");
-        binder.registerCustomEditor(Integer.class, null, new CustomNumberEditor(Integer.class, null, true));
-        binder.registerCustomEditor(Long.class, null, new CustomNumberEditor(Long.class, null, true));
-        binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
-        SimpleDateFormat dateShortFormat = new SimpleDateFormat(AbdfConstants.DEFUALT_SHOT_TIME_FORMAT);
-        dateShortFormat.setLenient(false);
-        binder.registerCustomEditor(Date.class, null, new CustomDateEditor(dateShortFormat, true));
-        SimpleDateFormat dateLongFormat = new SimpleDateFormat(AbdfConstants.DEFUALT_LONG_TIME_FORMAT);
-        dateLongFormat.setLenient(false);
-        binder.registerCustomEditor(Date.class, null, new CustomDateEditor(dateLongFormat, true));
-    }*/
-    
     @InitBinder 
     //http://sillycat.javaeye.com/blog/563979
     public void initBinder(WebDataBinder binder) { 
@@ -148,7 +107,7 @@ public class BaseMultiActionController extends MultiActionController {
                    setValue(DateTimeUtils.stringFormatToDate(text, Constants.NO_SPLIT_SHOT_TIME_FORMAT));
                    return;
                }
-               //常日期
+               //长日期，带时分秒
                if(text.length() > 10){
                    setValue(DateTimeUtils.stringFormatToDate(text, Constants.DEFUALT_LONG_TIME_FORMAT));
                    return;
@@ -187,43 +146,20 @@ public class BaseMultiActionController extends MultiActionController {
     public BindException handleErrors(HttpServletRequest request,HttpServletResponse response) throws Exception {
         BindException errors = (BindException) request.getAttribute(ERRORS_NAME);
         if (errors.hasErrors()) {
-            log.debug("handleErrors hasErrors!!!");
+            log.warn("handleErrors hasErrors!!!");
             return errors;
-        } else {
+        } 
+        else {
             return null;
         }
     }
     
     //包装异常信息
-    protected void wrapModelAndView(ModelAndView view,Exception e){
+    protected void wrapModelAndView(ModelAndView view,Exception e) {
         if(e != null){
             log.warn("WARN", e);
             view.addObject(RESPONSE_STATUS_CODE, STATUS_CODE_ERR);
             view.addObject(RESPONSE_MESSAGE, e.getMessage());
         }
-    }
-    
-    //得到术语的转义输出
-    public String getTermValue(String code, String defaultValue, String param, String split){
-        log.debug("begin get term value...");
-        
-        if(StringUtils.isBlank(defaultValue)){
-            defaultValue = code;
-        }
-        
-        log.debug("code :" + code + ", value : " + defaultValue);
-        return defaultValue;
-    }
-    
-    public String getTermValue(String code, String defaultValue, String param){
-        return getTermValue(code, defaultValue, param, null);
-    }
-    
-    public String getTermValue(String code, String defaultValue){
-        return getTermValue(code, defaultValue, null, null);
-    }
-    
-    public String getTermValue(String code){
-        return getTermValue(code, code, null, null);
     }
 }

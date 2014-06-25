@@ -80,7 +80,7 @@ public class CmsTermService extends DefaultEntityService<CmsTerm, Long>{
      */
     public void addTermTaxonomy(CmsTerm term, CmsTermTaxonomy taxonomy, String postId)throws Exception{
         Long maxOrderNo = getMaxOerderNo(JpressConstants.MENU_PONIT_TYPE_TAG);
-        term.setGroup(maxOrderNo + 1);
+        term.setJgroup("" + (maxOrderNo + 1));
         cmsTermMapper.save(term);
         long termId = term.getId();
         if(termId > 0){
@@ -89,7 +89,7 @@ public class CmsTermService extends DefaultEntityService<CmsTerm, Long>{
                 termMeta.setTermId(termId);
                 termMeta.setMetaType(JpressConstants.DICT_POST_TYPE_POST);
 //                termMeta.setKey(CliviaConstants.KEY_PRCTURE_FEATURE_PERFIX + termId + "_" + postId);
-                termMeta.setKey(JpressConstants.KEY_PRCTURE_FEATURE_PERFIX);
+                termMeta.setJkey(JpressConstants.KEY_PRCTURE_FEATURE_PERFIX);
                 termMeta.setName(JpressConstants.PRCTURE_FEATURE_TEXT);
                 termMeta.setStatus(JpressConstants.DICT_GLOBAL_STATUS_VALIDATE);
                 termMeta.setValue(String.valueOf(postId));

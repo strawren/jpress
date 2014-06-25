@@ -30,7 +30,7 @@ public class CmsPostMeta extends Model{
 
     private Long termMetaId;
 
-    private String key;
+    private String jkey;
 
     private String name;
 
@@ -82,13 +82,13 @@ public class CmsPostMeta extends Model{
         this.termMetaId = termMetaId;
     }
 
-    public String getKey(){
-        return key;
+    public String getJkey(){
+        return jkey;
     }
 
-    public void setKey(String key){
-	entityMap.put("key", key);
-        this.key = key;
+    public void setJkey(String jkey){
+	entityMap.put("jkey", jkey);
+        this.jkey = jkey;
     }
 
     public String getName(){

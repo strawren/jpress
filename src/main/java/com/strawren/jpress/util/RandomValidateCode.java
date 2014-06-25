@@ -65,8 +65,7 @@ public class RandomValidateCode {
     /**
      * 生成随机图片
      */
-    public void getRandcode(HttpServletRequest request,
-            HttpServletResponse response) {
+    public void getRandcode(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         //BufferedImage类是具有缓冲区的Image类,Image类是用于描述图像信息的类
         BufferedImage image = new BufferedImage(width,height,BufferedImage.TYPE_INT_BGR);

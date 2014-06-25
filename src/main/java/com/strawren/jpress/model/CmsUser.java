@@ -24,7 +24,7 @@ import com.strawren.bsp.core.Model;
 public class CmsUser extends Model {
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private long id;
 
     private String loginName;
 
@@ -63,11 +63,11 @@ public class CmsUser extends Model {
 
     private String lastUpdOperName;
 
-    public Long getId(){
+    public long getId(){
         return id;
     }
 
-    public void setId(Long id){
+    public void setId(long id){
 	entityMap.put("id", id);
         this.id = id;
     }

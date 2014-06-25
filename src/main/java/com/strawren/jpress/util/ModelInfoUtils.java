@@ -54,29 +54,31 @@ public abstract class ModelInfoUtils {
      * @param object
      * @param user
      */
-    public static void createModelInfoBySys(Serializable object)
-    {
-        //获取用户名
+    public static void createModelInfoBySys(Serializable object) {
         String userName = getCurUserName();
-
-        if(ReflectionUtils.getDeclaredField(object, CREATE_TIME) != null)
+        Long userId = getCurUserId();
+        if(userId == null) {
+        	userId = -1L;
+        }
+        
+        if(ReflectionUtils.getDeclaredField(object, CREATE_TIME) != null) {
             ReflectionUtils.invokeSetterMethod(object, CREATE_TIME, DateTimeUtils.getCurrentDate());
-
-        if(ReflectionUtils.getDeclaredField(object, CREATE_OPER_ID) != null)
-            ReflectionUtils.invokeSetterMethod(object, CREATE_OPER_ID, Long.valueOf(-1L));
-
-        if(ReflectionUtils.getDeclaredField(object, CREATE_OPER_NAME) != null)
+        }
+        if(ReflectionUtils.getDeclaredField(object, CREATE_OPER_ID) != null) {
+            ReflectionUtils.invokeSetterMethod(object, CREATE_OPER_ID, userId);
+        }
+        if(ReflectionUtils.getDeclaredField(object, CREATE_OPER_NAME) != null) {
             ReflectionUtils.invokeSetterMethod(object, CREATE_OPER_NAME, userName);
-
-        if(ReflectionUtils.getDeclaredField(object, LAST_MOD_TIME) != null)
+        }
+        if(ReflectionUtils.getDeclaredField(object, LAST_MOD_TIME) != null) {
             ReflectionUtils.invokeSetterMethod(object, LAST_MOD_TIME, DateTimeUtils.getCurrentDate());
-
-        if(ReflectionUtils.getDeclaredField(object, LAST_MOD_OPER_ID) != null)
-            ReflectionUtils.invokeSetterMethod(object, LAST_MOD_OPER_ID, Long.valueOf(-1L));
-
-        if(ReflectionUtils.getDeclaredField(object, LAST_MOD_OPER_NAME) != null)
+        }
+        if(ReflectionUtils.getDeclaredField(object, LAST_MOD_OPER_ID) != null) {
+            ReflectionUtils.invokeSetterMethod(object, LAST_MOD_OPER_ID, userId);
+        }
+        if(ReflectionUtils.getDeclaredField(object, LAST_MOD_OPER_NAME) != null) {
             ReflectionUtils.invokeSetterMethod(object, LAST_MOD_OPER_NAME, userName);
-
+        }
     }
 
     /**
@@ -109,17 +111,19 @@ public abstract class ModelInfoUtils {
      * @param object
      * @param user
      */
-    public static void updateModelInfoBySys(Serializable object)
-    {
-      //获取用户名
+    public static void updateModelInfoBySys(Serializable object)  {
         String userName = getCurUserName();
-
-        if(ReflectionUtils.getDeclaredField(object, LAST_MOD_OPER_ID) != null)
-            ReflectionUtils.invokeSetterMethod(object, LAST_MOD_OPER_ID, Long.valueOf(-1L));
-
-        if(ReflectionUtils.getDeclaredField(object, LAST_MOD_OPER_NAME) != null)
+        Long userId = getCurUserId();
+        if(userId == null) {
+        	userId = -1L;
+        }
+        
+        if(ReflectionUtils.getDeclaredField(object, LAST_MOD_OPER_ID) != null) {
+            ReflectionUtils.invokeSetterMethod(object, LAST_MOD_OPER_ID, userId);
+        }
+        if(ReflectionUtils.getDeclaredField(object, LAST_MOD_OPER_NAME) != null) {
             ReflectionUtils.invokeSetterMethod(object, LAST_MOD_OPER_NAME, userName);
-
+        }
     }
 
     /**
@@ -150,7 +154,7 @@ public abstract class ModelInfoUtils {
      * @param object 实体对象并且实现了Serializable接口的类
      */
     public static void updateModelUpdateTime(Object object){
-        if(object == null){
+        if(object == null) {
             return;
         }
 

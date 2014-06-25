@@ -8,7 +8,7 @@
         <id column="ID" jdbcType="BIGINT" property="id" />
         <result column="TERM_ID" jdbcType="BIGINT" property="termId" />
         <result column="META_TYPE" jdbcType="VARCHAR" property="metaType" />
-        <result column="KEY" jdbcType="VARCHAR" property="key" />
+        <result column="JKEY" jdbcType="VARCHAR" property="jkey" />
         <result column="NAME" jdbcType="VARCHAR" property="name" />
         <result column="VALUE_TYPE" jdbcType="VARCHAR" property="valueType" />
         <result column="VALUE_FORMAT" jdbcType="VARCHAR" property="valueFormat" />
@@ -33,7 +33,7 @@
             ID,
             TERM_ID,
             META_TYPE,
-            KEY,
+            JKEY,
             NAME,
             VALUE_TYPE,
             VALUE_FORMAT,
@@ -51,7 +51,7 @@
             #{id,jdbcType=BIGINT},
             #{termId,jdbcType=BIGINT},
             #{metaType,jdbcType=VARCHAR},
-            #{key,jdbcType=VARCHAR},
+            #{jkey,jdbcType=VARCHAR},
             #{name,jdbcType=VARCHAR},
             #{valueType,jdbcType=VARCHAR},
             #{valueFormat,jdbcType=VARCHAR},
@@ -88,8 +88,8 @@
             <if test="entityMap.metaType != null">
                 META_TYPE = #{entityMap.metaType,jdbcType=VARCHAR},
             </if>
-            <if test="entityMap.key != null">
-                KEY = #{entityMap.key,jdbcType=VARCHAR},
+            <if test="entityMap.jkey != null">
+                JKEY = #{entityMap.jkey,jdbcType=VARCHAR},
             </if>
             <if test="entityMap.name != null">
                 NAME = #{entityMap.name,jdbcType=VARCHAR},

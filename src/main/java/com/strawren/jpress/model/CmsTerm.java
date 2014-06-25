@@ -31,7 +31,7 @@ public class CmsTerm extends Model {
 
     private String slug;
 
-    private Long group;
+    private String jgroup;
 
     private String miscDesc;
 
@@ -91,13 +91,13 @@ public class CmsTerm extends Model {
         this.slug = slug;
     }
 
-    public Long getGroup(){
-        return group;
+    public String getJgroup(){
+        return jgroup;
     }
 
-    public void setGroup(Long group){
-        entityMap.put("group", group);
-        this.group = group;
+    public void setJgroup(String jgroup){
+        entityMap.put("jgroup", jgroup);
+        this.jgroup = jgroup;
     }
 
     public String getMiscDesc(){

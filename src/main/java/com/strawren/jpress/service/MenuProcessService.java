@@ -135,7 +135,7 @@ public class MenuProcessService {
             //post第1属性，菜单目标对象id
             CmsPostMeta cmsPostMeta = new CmsPostMeta();
             cmsPostMeta.setPostId(cmsPost.getId());
-            cmsPostMeta.setKey(JpressConstants.POST_META_TAR_MENU_OBJ_ID);   //post id
+            cmsPostMeta.setJkey(JpressConstants.POST_META_TAR_MENU_OBJ_ID);   //post id
 
             CmsPost targetPost = cmsPostService.get(id);
             if(targetPost != null && !JpressConstants.DICT_POST_TYPE_MENU_NAV.equals(targetPost.getPostType())){
@@ -159,7 +159,7 @@ public class MenuProcessService {
             //post第2属性，菜单的父菜单
             cmsPostMeta = new CmsPostMeta();
             cmsPostMeta.setPostId(cmsPost.getId());
-            cmsPostMeta.setKey(JpressConstants.POST_META_TAR_MENU_PARENT_ID); 
+            cmsPostMeta.setJkey(JpressConstants.POST_META_TAR_MENU_PARENT_ID); 
             if(menuParentId == 0){
                 cmsPostMeta.setValue("0");
             }
@@ -173,7 +173,7 @@ public class MenuProcessService {
             //post第3属性，菜单的目标对象类型
             cmsPostMeta = new CmsPostMeta();
             cmsPostMeta.setPostId(cmsPost.getId());
-            cmsPostMeta.setKey(JpressConstants.MENU_POINT_TYPE_KEY); 
+            cmsPostMeta.setJkey(JpressConstants.MENU_POINT_TYPE_KEY); 
             if(targetPost != null && !JpressConstants.DICT_POST_TYPE_MENU_NAV.equals(targetPost.getPostType())){
                 cmsPostMeta.setValue(JpressConstants.MENU_PONIT_TYPE_PAGE);
             }
@@ -233,7 +233,7 @@ public class MenuProcessService {
         //url属性放在meta中
         CmsPostMeta postMeta = new CmsPostMeta();
         postMeta.setPostId(cmsPost.getId());
-        postMeta.setKey(JpressConstants.POST_META_POST_VISIT_URL);
+        postMeta.setJkey(JpressConstants.POST_META_POST_VISIT_URL);
         postMeta.setValue(linkUrl);
         postMeta.setStatus(Constants.DICT_GLOBAL_STATUS_VALIDATE);
         ModelInfoUtils.createModelInfoBySys(postMeta);
@@ -253,7 +253,7 @@ public class MenuProcessService {
         //保存该菜单的属性，目标link的post
         CmsPostMeta cmsPostMeta = new CmsPostMeta();
         cmsPostMeta.setPostId(menuPost.getId());
-        cmsPostMeta.setKey(JpressConstants.POST_META_TAR_MENU_OBJ_ID);   //post id
+        cmsPostMeta.setJkey(JpressConstants.POST_META_TAR_MENU_OBJ_ID);   //post id
         cmsPostMeta.setValue(String.valueOf(cmsPost.getId()));
         cmsPostMeta.setStatus(Constants.DICT_GLOBAL_STATUS_VALIDATE);
         ModelInfoUtils.createModelInfoBySys(cmsPostMeta);
@@ -262,7 +262,7 @@ public class MenuProcessService {
         //第2属性，menu的父子关系
         cmsPostMeta = new CmsPostMeta();
         cmsPostMeta.setPostId(menuPost.getId());
-        cmsPostMeta.setKey(JpressConstants.POST_META_TAR_MENU_PARENT_ID);
+        cmsPostMeta.setJkey(JpressConstants.POST_META_TAR_MENU_PARENT_ID);
         cmsPostMeta.setValue("0");
         cmsPostMeta.setStatus(Constants.DICT_GLOBAL_STATUS_VALIDATE);
         ModelInfoUtils.createModelInfoBySys(cmsPostMeta);
@@ -271,7 +271,7 @@ public class MenuProcessService {
         //第3属性，menu目标对象的类型
         cmsPostMeta = new CmsPostMeta();
         cmsPostMeta.setPostId(menuPost.getId());
-        cmsPostMeta.setKey(JpressConstants.MENU_POINT_TYPE_KEY);
+        cmsPostMeta.setJkey(JpressConstants.MENU_POINT_TYPE_KEY);
         cmsPostMeta.setValue(JpressConstants.MENU_PONIT_TYPE_LINK);
         cmsPostMeta.setStatus(Constants.DICT_GLOBAL_STATUS_VALIDATE);
         ModelInfoUtils.createModelInfoBySys(cmsPostMeta);
@@ -316,7 +316,7 @@ public class MenuProcessService {
         //保存该菜单的属性，目标link的post
         CmsPostMeta cmsPostMeta = new CmsPostMeta();
         cmsPostMeta.setPostId(menuPost.getId());
-        cmsPostMeta.setKey(JpressConstants.POST_META_TAR_MENU_OBJ_ID);   //post id
+        cmsPostMeta.setJkey(JpressConstants.POST_META_TAR_MENU_OBJ_ID);   //post id
         cmsPostMeta.setValue(String.valueOf(termOrTagId));
         cmsPostMeta.setStatus(Constants.DICT_GLOBAL_STATUS_VALIDATE);
         ModelInfoUtils.createModelInfoBySys(cmsPostMeta);
@@ -325,7 +325,7 @@ public class MenuProcessService {
         //第2属性，menu的父子关系
         cmsPostMeta = new CmsPostMeta();
         cmsPostMeta.setPostId(menuPost.getId());
-        cmsPostMeta.setKey(JpressConstants.POST_META_TAR_MENU_PARENT_ID);
+        cmsPostMeta.setJkey(JpressConstants.POST_META_TAR_MENU_PARENT_ID);
         cmsPostMeta.setValue("0");
         cmsPostMeta.setStatus(Constants.DICT_GLOBAL_STATUS_VALIDATE);
         ModelInfoUtils.createModelInfoBySys(cmsPostMeta);
@@ -334,7 +334,7 @@ public class MenuProcessService {
         //第3属性，menu目标对象的类型
         cmsPostMeta = new CmsPostMeta();
         cmsPostMeta.setPostId(menuPost.getId());
-        cmsPostMeta.setKey(JpressConstants.MENU_POINT_TYPE_KEY);
+        cmsPostMeta.setJkey(JpressConstants.MENU_POINT_TYPE_KEY);
         if(JpressConstants.DICT_TERM_TAXONOMY_CATEGORY.equals(dataType)){
             cmsPostMeta.setValue(JpressConstants.MENU_PONIT_TYPE_TERM);
         }

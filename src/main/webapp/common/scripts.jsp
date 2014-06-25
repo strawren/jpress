@@ -4,6 +4,8 @@
 		<!-- javascript -->
         <script src="${ctx }/scripts/jquery.1.8.1.min.js"></script>
         <script src="${ctx }/scripts/bootstrap.2.2.2.min.js"></script>
+        <script src="${ctx }/scripts/bootstrap-confirm.1.0.0.js"></script>
+        <script src="${ctx }/scripts/bootstrap-alert.1.0.0.js"></script>
         
         <script src="${ctx }/scripts/uniform/jquery.uniform.js"></script>
         <script src="${ctx }/scripts/validate/jquery.metadata.js"></script>

@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/6/18 21:19:59                           */
+/* Created on:     2014/6/23 14:13:39                           */
 /*==============================================================*/
 
 
@@ -79,7 +79,7 @@ create table CMS_COMMENT_META
 (
    ID                   int not null auto_increment,
    COMMENT_ID           int,
-   ·KEY·                  text,
+   JKEY                 text,
    VALUE                text,
    MISC_DESC            text,
    STATUS               text comment '逻辑删除标志',
@@ -199,7 +199,7 @@ create table CMS_POST_META
    ID                   int not null auto_increment,
    POST_ID              int,
    TERM_META_ID         int,
-   ·KEY·                  text,
+   JKEY                 text,
    NAME                 text,
    VALUE                text,
    SHOW_ORDER           int,
@@ -224,7 +224,7 @@ create table CMS_TERM
    ID                   int not null auto_increment,
    NAME                 text,
    SLUG                 varchar(200),
-   ·GROUP·                int,
+   JGROUP               varchar(200),
    MISC_DESC            text,
    STATUS               text comment '逻辑删除标志',
    CREATE_TIME          datetime,
@@ -255,7 +255,7 @@ create table CMS_TERM_META
    ID                   int not null auto_increment,
    TERM_ID              int,
    META_TYPE            text comment '属性类型：term/post',
-   ·KEY·                  text,
+   JKEY                 text,
    NAME                 text comment '显示的名称',
    VALUE_TYPE           text comment '值类型，针对POST才有效，比如文件，数字，日期，文本等',
    VALUE_FORMAT         text comment '值的格式',
@@ -358,7 +358,7 @@ create table CMS_USER_META
 (
    ID                   int not null auto_increment,
    USER_ID              int,
-   ·KEY·                  text,
+   JKEY                 text,
    VALUE                text,
    MISC_DESC            text,
    STATUS               text comment '逻辑删除标志',
