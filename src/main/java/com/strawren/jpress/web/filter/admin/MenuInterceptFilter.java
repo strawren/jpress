@@ -45,6 +45,7 @@ public class MenuInterceptFilter  implements Filter {
 					String paramVal = request.getParameter(paramName);
 					log.info("find menu param in request, val ->" + paramVal);
 					request.getSession().setAttribute(menuParamKey, paramVal);
+					break;
 				}
 			}
 		}

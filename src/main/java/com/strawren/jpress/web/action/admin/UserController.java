@@ -93,7 +93,7 @@ public class UserController extends BaseMultiActionController {
     public ModelAndView edit(HttpServletRequest request, HttpServletResponse response, CmsUser model) {
         log.debug("begin...");
 
-        ModelAndView mv = new ModelAndView("/admin/user/edit");
+        ModelAndView mv = new ModelAndView("/admin/user/edit", "model", model);
         
         if(model == null || model.getId() < 1) {
         	model = new CmsUser();
@@ -103,8 +103,6 @@ public class UserController extends BaseMultiActionController {
 		}
 
         putUserLevel2Mv(mv);
-        mv.addObject("model", model);
-        
         log.debug("end!!!");
 		return mv;
     }
