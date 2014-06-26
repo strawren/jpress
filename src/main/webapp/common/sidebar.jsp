@@ -70,13 +70,13 @@
                                 </a>
                                 <ul class="sub-sidebar-form corner-top shadow-white">
                                     <li>
-                                        <a href="${ctx }/cms/article/list.action?menu=menu_content&postStatus=all" title="所有内容" class="corner-all">
+                                        <a href="${ctxAdmin}/article/list.action?menu=menu_content&postStatus=all" title="所有内容" class="corner-all">
                                             <i class="icofont-file"></i>
                                             <span class="sidebar-text">所有文章</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="${ctx }/cms/article/add_show.action?menu=menu_content" title="新写内容" class="corner-all">
+                                        <a href="${ctxAdmin}/article/add_show.action?menu=menu_content" title="新写内容" class="corner-all">
                                             <i class="icofont-book"></i>
                                             <span class="sidebar-text">新增文章</span>
                                         </a>
@@ -88,13 +88,13 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="${ctx }/cms/tag/tag_index.action?menu=menu_content" title="标签" class="corner-all">
+                                        <a href="${ctxAdmin}/tag/tag_index.action?menu=menu_content" title="标签" class="corner-all">
                                             <i class="icon-tags"></i>
                                             <span class="sidebar-text">文章标签管理</span>
                                         </a>
                                     </li>
                                      <li>
-                                        <a href="${ctx }/cms/taxonomy/sys_term_add.action?menu=menu_content" title="属性" class="corner-all">
+                                        <a href="${ctxAdmin}/taxonomy/sys_term_add.action?menu=menu_content" title="属性" class="corner-all">
                                             <i class=" icon-tasks"></i>
                                             <span class="sidebar-text">文章属性管理</span>
                                         </a>
@@ -177,20 +177,12 @@
                                 </ul>
                             </li>
                             
-                            <%-- <li id="menu_comment">
-                                <a href="${ctxAdmin}/comment/all.action?menu=menu_comment" title="评论">
+                            <li id="menu_comment">
+                                <a href="${ctxAdmin}/comment/list.action?menu=menu_comment" title="评论">
                                     <div class="helper-font-24">
                                         <i class="icofont-edit"></i>
                                     </div>
                                     <span class="sidebar-text">评论</span>
-                                </a>
-                            </li> --%>
-                            <li id="menu_statistics">
-                                <a href="${ctxAdmin}/statistics/access.action?menu=menu_comment" title="访问统计">
-                                    <div class="helper-font-24">
-                                        <i class="icofont-edit"></i>
-                                    </div>
-                                    <span class="sidebar-text">访问统计</span>
                                 </a>
                             </li>
                             
@@ -250,7 +242,7 @@
                                         </a>
                                     </li>
 	                                <li>
-                                        <a href="${ctxAdmin}/user/pwd.action?menu=menu_user" title="密码修改">
+                                        <a href="${ctxAdmin}/page.action?menu=menu_user&page=/user/pwd" title="密码修改">
                                             <i class="icofont-paste"></i>
                                             <span class="sidebar-text">密码修改</span>
                                          </a>

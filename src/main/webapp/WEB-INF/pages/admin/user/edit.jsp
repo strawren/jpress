@@ -11,21 +11,21 @@
         <script type="text/javascript">
         	var createFlag = ${model.id lt 1 ? "true" : "false"};
             $(document).ready(function(){
-                $("#saveUser").on("click",function(){
+                $("#saveFormBtn").on("click",function(){
                     if (checkParams()) {
-                        $("#addUserForm").submit();
+                        $("#editForm").submit();
                     }
                 });
             });
             
             function checkParams(){
-                var userEmail = $.trim($("#addUserForm").find("#userEmail").val());
+                var userEmail = $.trim($("#editForm").find("#userEmail").val());
                 if (!userEmail || userEmail.length == 0) {
                     $("#formMsg").text("电子邮件地址不能为空").show();
                     return false;
                 }
-                var loginPwd = $.trim($("#addUserForm").find("#loginPwd").val());
-                var loginPwd2 = $.trim($("#addUserForm").find("#loginPwd2").val());
+                var loginPwd = $.trim($("#editForm").find("#loginPwd").val());
+                var loginPwd2 = $.trim($("#editForm").find("#loginPwd2").val());
                 if (loginPwd != loginPwd2) {
                     $("#formMsg").text("两次密码输入不一致").show();
                     return false;
@@ -84,11 +84,11 @@
                                             <span><i class="${model.id lt 1 ? 'icofont-plus-sign' : 'icon-edit'}"></i>&nbsp;${model.id lt 1 ? "添加用户" : "编辑用户"}</span>
                                         </div>
                                         <div class="box-body">
-                                            <form id="addUserForm" method="post" action="${ctxAdmin }/user/save.action">
+                                            <form id="editForm" method="post" action="${ctxAdmin }/user/save.action">
                                             	<input name="id" type="hidden" value="${model.id }" />
                                                 <table class="form-table">
                                                     <tr valign="top">
-                                                    	<th scope="row"><label for="loginName">用户名</label></th>
+                                                    	<th scope="row"><label for="loginName">登陆名</label></th>
                                                     	<td>
                                                        		<input name="loginName" type="text" class="regular-text ltr" id="loginName" value="${model.loginName }" ${model.id lt 1 ? "" : "readonly='readonly'"} />*
                                                    		</td>
@@ -138,7 +138,7 @@
                                                 </table>
                                                 
                                                 <div class="form-actions">
-                                                    &nbsp;&nbsp;&nbsp; <button type="button" class="btn btn-primary" id="saveUser" >保存</button>
+                                                    &nbsp;&nbsp;&nbsp; <button type="button" class="btn btn-primary" id="saveFormBtn" >保存</button>
                                                 </div>
                                             </form>
                                             

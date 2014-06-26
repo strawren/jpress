@@ -34,9 +34,9 @@
 				/static/** = anon
 				/userfiles/** = anon
 				${adminPath}/random.action* = anon
-				${adminPath}/login.action?* = authc
+				${adminPath}/login.action* = authc
 				${adminPath}/logout.action = logout
-				${adminPath}/*.action* = user
+				${adminPath}/**.action* = user
 		 	</value>
 		</property>
   	</bean>

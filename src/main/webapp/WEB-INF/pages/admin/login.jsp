@@ -24,6 +24,10 @@
 	        	$("#ranValCodeImg").on("click", function(){
                     $(this).attr('src', "${ctxAdmin}/random.action");
                 });
+	        	
+	        	$("#friendHelpHref").click(function(){
+	        		$('#friendHelp').modal('show');
+	        	});
 	        });
 	        
         </script>   
@@ -152,12 +156,33 @@
 			<span>|</span>
 			<a href="http://bbs.jpress.cn" target="_blank">jpress社区心</a>
 			<span>|</span>
-			<a href="http://me.alipay.com/strawren" target="_blank"><img alt="友情赞助" src="${rootPath }/images/alipay/strawren.png" />友情赞助</a>
+			<a href="#" id="friendHelpHref">友情赞助</a>
 			<span>|</span>
-			<a href="#">qq群325541893</a>
+			<a href="#">qq群：325541893</a>
 			<br/>
            	<span class="copy">©</span>since 2013 jpress.cn<span class="mar_l"></span>
        	</div>
+       	
+       	<div class="modal hide fade" id="friendHelp">
+		    <div class="modal-header">
+		        <button class="close" data-dismiss="modal">x</button>
+		        <h3>友情赞助</h3>
+		    </div>
+		    <div class="modal-body">
+		    	<ul>
+		    		<li>
+		    		   资金赞助：可通过支付宝向我们提供资金赞助，请用支付宝手机钱包扫码：<br/>   
+		    		   <img alt="友情赞助" src="${rootPath }/images/alipay/strawren.png" width="100px" height="100px"/>
+		    		</li>
+		    		<li>
+		    			托管赞助：我们正在寻找合适的服务器，可发邮件至 webmaster@jpress.cn
+		    		</li>
+		    	</ul>
+		    </div>
+		    <div class="modal-footer">
+		        <a href="#" class="btn" data-dismiss="modal">确认</a>
+		    </div>  
+</div>  
     </body>
 </html>
 

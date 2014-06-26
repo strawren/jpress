@@ -201,6 +201,12 @@ public class IndexController extends BaseMultiActionController {
         return new ModelAndView("/admin/login");
     }
 
+    @RequestMapping("/page.action")
+    public ModelAndView page(HttpServletRequest request, HttpServletResponse response, String page) {
+    	log.debug("begin，page ->" + page);
+    	return new ModelAndView("/admin" + page);
+    }
+    
     /**
      * 生产随机验证码
      * @param request
@@ -224,5 +230,4 @@ public class IndexController extends BaseMultiActionController {
         }
         return null;
     }
-
 }

@@ -83,7 +83,7 @@ public class ArticleControler extends BaseMultiActionController {
     public ModelAndView list(HttpServletRequest request, HttpServletResponse response, Page<CmsPost> page, @RequestParam(value = "termSet", required = false) String termTaxonomy){
         log.debug("article list.action begin ...");
 
-        ModelAndView mv = new ModelAndView("cms/content/article/list");
+        ModelAndView mv = new ModelAndView("admin/content/article/list");
         String postStatus = request.getParameter("postStatus");
 //        List<TermRelevanceTaxonomyDTO> termList = gettaxonomyParent(CliviaConstants.DICT_TERM_TAXONOMY_CATEGORY);
         log.debug("termTaxonomy is >> " + termTaxonomy);

@@ -29,10 +29,10 @@
 							<li class="dropdown" style="border-right: 0px; ">
 								<a class="user-menu" data-toggle="dropdown"><img src="${ctx }/images/userpic.png" alt="" /><span>${user.loginName }<b class="caret"></b></span></a>
 								<ul class="dropdown-menu">
-									<li><a href="#" title=""><i class="icon-user"></i>Profile</a></li>
-									<li><a href="#" title=""><i class="icon-inbox"></i>Messages<span class="badge badge-info">9</span></a></li>
-									<li><a href="#" title=""><i class="icon-cog"></i>Settings</a></li>
-									<li><a href="#" title=""><i class="icon-remove"></i>Logout</a></li>
+									<li><a href="#" title="消息"><i class="icon-inbox"></i> 消息 <span class="badge badge-info">0</span></a></li>
+									<li><a href="${ctxAdmin }/user/view.action?id=${user.id}" title="个人信息"><i class="icon-user"></i> 个人信息</a></li>
+									<li><a href="${ctxAdmin }/setting/view.action" title="设置"><i class="icon-cog"></i> 设置</a></li>
+									<li><a href="${ctxAdmin }/logout.action" title="退出"><i class="icon-remove"></i> 退出</a></li>
 								</ul>
 							</li>
 						</ul>

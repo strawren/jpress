@@ -241,25 +241,26 @@ public class UserController extends BaseMultiActionController {
      * @return
      */
     @RequestMapping("/pwd.action")
-    public ModelAndView pwd(HttpServletRequest request, HttpServletResponse response, CmsUser model) {
+    public ModelAndView pwd(HttpServletRequest request, HttpServletResponse response) {
         log.debug("begin...");
-
         ModelAndView mv = new ModelAndView("/admin/user/pwd");
 
-        String oldPwd = model.getLoginPwd();
+        String oldPwd = request.getParameter("oldPwd");
         String newPwd = request.getParameter("newPwd");
         
         if(StringUtils.isBlank(oldPwd) || StringUtils.isBlank(newPwd)) {
-        	log.warn("old pwd or new pwd is null for [" + model.getId() + "]");
+        	log.warn("old pwd or new pwd is null");
             mv.addObject("message", "新密码或者旧密码为空!");
             return mv;
         }
         
-        if(model.getId() < 1) {
-        	log.warn("user don't exist");
-            mv.addObject("message", "用户不存在!");
-            return mv;
+        CmsUser model = (CmsUser)request.getSession().getAttribute("user");
+        if(model == null) {
+        	log.info("can not change pwd, for session user is null");
+        	 mv.addObject("message", "当前登录用户已经失效，请重新登录后再试！");
+             return mv;
         }
+        
         model = cmsUserService.get(model.getId());
         if(model == null) {
         	log.warn("user don't exist");
@@ -275,7 +276,7 @@ public class UserController extends BaseMultiActionController {
         model.setLoginPwd(Md5Utils.getMd5Code(newPwd, "UTF-8", true)); 
         ModelInfoUtils.updateModelInfoBySys(model);
         cmsUserService.update(model);
-        mv.addObject("message", "修改密码成功!");
+        mv.addObject("message", "修改密码成功，请牢记新密码哦!");
         
         log.debug("end!!!");
         return mv;

@@ -4,15 +4,11 @@
 <!DOCTYPE html>
 <html lang="zh">
     <head>
-        <title>东方亿付电视商务系统--内容管理--仪表盘</title>
+        <title>${appName }--文章--所有文章</title>
         <jsp:include page="/common/meta.jsp"></jsp:include>
         <!-- styles -->
-        <!-- 
-        <link href="${ctx }/css/clivia-admin-all.css" rel="stylesheet" />
-        -->
         <jsp:include page="/common/style.jsp"></jsp:include>
          
-        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
         <script src="${ctx }/scripts/ghtml5/ghtml5.js"></script>
         <![endif]-->
@@ -20,7 +16,7 @@
         
         <script type="text/javascript">
                 $(document).on("page.change",function(event,pagenum){
-                     var href= "${ctx}/cms/article/list.html?pageNum="+pagenum;
+                     var href= "${ctxAdmin}/article/list.html?pageNum="+pagenum;
                      window.location.href = href;
                });
         
@@ -119,9 +115,9 @@
             
             function delConfirm(delId){
          	   if(!confirm("数据删除将不可恢复，确认删除吗?")){
-                    return 
+                    return;
                 }
-            	   window.location.href="${ctx }/cms/article/del_article.html?postId=" + delId;
+            	   window.location.href="${ctxAdmin }/article/del_article.html?postId=" + delId;
             }
             
         </script>
@@ -137,7 +133,7 @@
             <div class="row-fluid">
                 <!-- span side-left -->
                 <div class="span1">
-                    <jsp:include page="/common/cms/sidebar.jsp"></jsp:include>
+                    <jsp:include page="/common/sidebar.jsp"></jsp:include>
                 </div><!-- span side-left -->
                 
                 <!-- span content -->
@@ -159,7 +155,7 @@
                                             <div class="header-control">
                                                 <!-- <a data-box="collapse"><i class="icofont-caret-up"></i></a>
                                                 <a data-box="close" data-hide="bounceOutRight">&times;</a> -->
-                                                 <a class="btn tbn-small btn-info" href="${ctx }/cms/article/add_show.html?menu=menu_content">新增</a><br/>&nbsp;
+                                                 <a class="btn tbn-small btn-info" href="${ctxAdmin }/article/add_show.html?menu=menu_content">新增</a><br/>&nbsp;
                                             </div>
                                             <span><i class="icon-list-alt"></i>&nbsp;所有内容</span>
                                             
@@ -204,7 +200,7 @@
                                                                 <div class="btn-group">
                                                                 <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">操作<span class="caret"></span></button>
                                                                 <ul class="dropdown-menu">
-                                                                    <li><a href="${ctx }/cms/article/edit_show.html?menu=menu_content&postId=${post.id }">编辑</a></li>
+                                                                    <li><a href="${ctxAdmin }/article/edit_show.html?menu=menu_content&postId=${post.id }">编辑</a></li>
                                                                     <li><a href="#" onclick="delConfirm(${post.id })">删除</a></li>
                                                                     <%-- <li><a href="${ctx }/cms/taxonomy/term_view.html?termId=${post.id }">查看</a></li> --%>
                                                                 </ul>
